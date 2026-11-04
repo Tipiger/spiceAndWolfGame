@@ -1,0 +1,16 @@
+.DS_Store
+node_modules/
+__pycache__/
+*.py[cod]
+*.tmp
+releases/
+.cache/
+_site/
+.env
+.env.*
+!.env.example
+*.save.json
+狼与香辛料-*.json
+~$*.xlsx
+# Raw user-provided reference library is not game source or a release asset.
+assets/狼与香辛料原作/
