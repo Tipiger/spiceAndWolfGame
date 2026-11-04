@@ -5,8 +5,10 @@
 ## 仓库与访问入口
 
 - 公开仓库：[Tipiger/spiceAndWolfGame](https://github.com/Tipiger/spiceAndWolfGame)，日常维护分支为 `main`。
-- 在线游玩：[狼与香辛料 · 行商旅记](https://tipiger.github.io/spiceAndWolfGame/)。
+- Pages 入口（待首次部署）：[狼与香辛料 · 行商旅记](https://tipiger.github.io/spiceAndWolfGame/)。
 - 构建与发布：[Verify and deploy GitHub Pages](https://github.com/Tipiger/spiceAndWolfGame/actions/workflows/pages.yml)。
+
+已上传游戏源码并将 Pages 来源配置为 GitHub Actions，HTTPS 已强制启用。2026-11-04 的 [GitHub 平台故障](https://www.githubstatus.com/incidents/smtdswd1h2w4) 影响 Git 操作与 Actions，首次工作流尚未启动，入口尚未上线。本地补充说明提交已保存；服务恢复后先 `git push` 同步，再检查工作流，必要时手动 **Run workflow**。无需重新创建仓库或登录授权。
 
 ## 在其他电脑继续维护
 
