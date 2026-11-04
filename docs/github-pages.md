@@ -2,19 +2,29 @@
 
 游戏由普通 HTML、CSS、JavaScript 和本地素材构成，GitHub Pages 直接提供静态文件。在线游玩不需要账号、后端或额外运行依赖，本地双击 `index.html` 的方式仍然可用。
 
-## 首次关联 GitHub
+## 仓库与访问入口
 
-1. 在 GitHub 创建空仓库，建议命名 `spiceAndWolfGame`，不要预先添加 README、许可文件或 `.gitignore`。
-2. 将本地 `main` 分支关联并推送到自己的仓库：
+- 公开仓库：[Tipiger/spiceAndWolfGame](https://github.com/Tipiger/spiceAndWolfGame)，日常维护分支为 `main`。
+- 在线游玩：[狼与香辛料 · 行商旅记](https://tipiger.github.io/spiceAndWolfGame/)。
+- 构建与发布：[Verify and deploy GitHub Pages](https://github.com/Tipiger/spiceAndWolfGame/actions/workflows/pages.yml)。
 
-   ```sh
-   git remote add origin https://github.com/你的用户名/spiceAndWolfGame.git
-   git push -u origin main
-   ```
+## 在其他电脑继续维护
 
-3. 在仓库的 **Settings → Pages → Build and deployment → Source** 选择 **GitHub Actions**。
-4. 在 **Actions → Verify and deploy GitHub Pages** 查看首次运行。若第一次推送早于开启 Pages，选择 **Run workflow** 重新运行。
-5. 部署成功后，**Settings → Pages** 和工作流的 `github-pages` 环境显示实际访问地址，通常为 `https://你的用户名.github.io/spiceAndWolfGame/`。
+先安装 Git、Node.js 18+ 和 Python 3.9+，然后克隆现有仓库：
+
+```sh
+git clone https://github.com/Tipiger/spiceAndWolfGame.git
+cd spiceAndWolfGame
+npm run verify
+```
+
+克隆后可以直接打开 `index.html` 游玩，也可运行 `npm start` 本地预览。项目没有需要安装的 npm 依赖。整套原作库、个人存档及本地发行包不在仓库中，不影响游戏运行；在新电脑推送改动前需登录有仓库写入权限的 GitHub 账号。
+
+## 复制为自己的仓库时
+
+将项目副本推送到自己的仓库后，在 **Settings → Pages → Build and deployment → Source** 选择 **GitHub Actions**。然后在 **Actions → Verify and deploy GitHub Pages** 查看运行结果；若第一次推送早于开启 Pages，选择 **Run workflow** 重新运行。
+
+部署成功后，**Settings → Pages** 和工作流的 `github-pages` 环境显示该副本的实际访问地址，通常为 `https://你的用户名.github.io/你的仓库名/`。原仓库的发布地址和本地 Git 的 `origin` 无需修改；只有维护自己的副本时才使用对应仓库地址。
 
 GitHub 免费账号支持公开仓库的 Pages；私有仓库是否支持取决于账号套餐。发布来源的配置和权限遵循 [GitHub 官方说明](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages)。
 
