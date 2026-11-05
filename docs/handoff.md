@@ -27,4 +27,4 @@
 
 当前测试、浏览器验收和截图见 `docs/validation.md`。公开仓库为 `https://github.com/Tipiger/spiceAndWolfGame`，本地 `main` 已关联 `origin/main`。工作流推送 `main` 后验证并发布 `_site/`，合并请求只验证；源码、数值表、运行素材及有效文档纳入版本管理，整套原作库、存档、缓存与发行包留本地。六张选定小说插图仍属运行资产，保留原图及来源说明。发行ZIP只作离线输出。
 
-2026-11-05 已通过 GitHub Actions 首次部署与线上验收，入口 `https://tipiger.github.io/spiceAndWolfGame/`，强制 HTTPS。以后在本项目正常提交并 `git push` 即可触发验证和发布，无需重新创建仓库或授权。GitHub CLI 已安装在本机 `~/.local/bin/gh`，本仓库凭据助手已关联该持久路径。自动存档仍留在浏览器，本地入口与线上入口可通过 JSON 导出、导入转移旅程。
+2026-11-05 已通过 GitHub Actions 手动部署与线上验收，入口 `https://tipiger.github.io/spiceAndWolfGame/`，强制 HTTPS。`main` 推送触发已配置，但本轮尚无自动运行记录，后续需确认；当前推送后可在工作流页手动 **Run workflow**，或运行 `~/.local/bin/gh workflow run pages.yml --repo Tipiger/spiceAndWolfGame --ref main` 完成发布。无需重新创建仓库或授权。GitHub CLI 已安装在本机 `~/.local/bin/gh`，本仓库凭据助手已关联该持久路径。自动存档仍留在浏览器，本地入口与线上入口可通过 JSON 导出、导入转移旅程。

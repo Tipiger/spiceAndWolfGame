@@ -8,7 +8,7 @@
 - 在线游玩：[狼与香辛料 · 行商旅记](https://tipiger.github.io/spiceAndWolfGame/)。
 - 构建与发布：[Verify and deploy GitHub Pages](https://github.com/Tipiger/spiceAndWolfGame/actions/workflows/pages.yml)。
 
-2026-11-05 已完成首次发布与线上浏览器验收。Pages 来源为 GitHub Actions，HTTPS 已强制启用；以后推送 `main` 后，完整验证成功才会更新站点。也可在工作流页面手动 **Run workflow**。
+2026-11-05 已完成手动发布与线上浏览器验收。Pages 来源为 GitHub Actions，HTTPS 已强制启用；配置包含 `main` 推送触发，完整验证成功才会更新站点。本轮尚未观察到推送自动创建运行记录；如果推送后没有任务，在工作流页面选择 **Run workflow**，分支选 `main`，即可完成已验证可用的发布流程。
 
 ## 在其他电脑继续维护
 
