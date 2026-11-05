@@ -4,8 +4,10 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import importlib.util
 from pathlib import Path
+import re
 import shutil
 import subprocess
 import sys
@@ -17,6 +19,10 @@ sys.dont_write_bytecode = True
 spec = importlib.util.spec_from_file_location("offline_package", ROOT / "scripts/package.py")
 offline_package = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(offline_package)
+ENTRY_RESOURCE = re.compile(
+    r'''(?P<prefix>\b(?:src|href)\s*=\s*)(?P<quote>["'])(?P<path>[^"']+\.(?:js|css))(?P=quote)''',
+    re.IGNORECASE,
+)
 
 
 def collect_pages_files() -> list[Path]:
@@ -55,6 +61,27 @@ def build_site(files: list[Path]) -> None:
         target = OUTPUT / source.relative_to(ROOT)
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(source, target)
+    entry = OUTPUT / "index.html"
+    if entry.is_file():
+        versions = {
+            source.relative_to(ROOT).as_posix(): hashlib.sha256(
+                (OUTPUT / source.relative_to(ROOT)).read_bytes()
+            ).hexdigest()[:12]
+            for source in files if source.suffix.lower() in {".js", ".css"}
+        }
+
+        def version_reference(match):
+            reference = match.group("path")
+            version = versions.get(reference)
+            if version is None:
+                return match.group(0)
+            quote = match.group("quote")
+            return f'{match.group("prefix")}{quote}{reference}?v={version}{quote}'
+
+        # Only the published entry changes; file:// and offline source keep
+        # their original paths. Content hashes invalidate stale CDN/browser JS.
+        entry.write_text(ENTRY_RESOURCE.sub(version_reference, entry.read_text(encoding="utf-8")),
+                         encoding="utf-8")
 
 
 def main(argv=None) -> None:

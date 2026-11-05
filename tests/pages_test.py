@@ -1,6 +1,7 @@
 """Check that publishing includes playable assets and excludes private sources."""
 
 import contextlib
+import hashlib
 import importlib.util
 import io
 from pathlib import Path
@@ -78,6 +79,59 @@ class PagesRelease(unittest.TestCase):
                     pages.build_site([])
                 self.assertTrue((output / "linked").is_symlink())
             self.assertEqual(marker.read_text(encoding="utf-8"), "keep")
+
+    def test_published_entry_versions_local_scripts_and_styles_without_changing_source(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            source = root / "index.html"
+            html = (
+                '<link rel="stylesheet" href="style.css">\n'
+                "<script defer src='js/app.js'></script>\n"
+                '<script src="https://example.com/remote.js"></script>\n'
+                '<img src="assets/crest.svg">\n'
+            )
+            source.write_text(html, encoding="utf-8")
+            script = root / "js/app.js"
+            script.parent.mkdir()
+            script.write_bytes(b"const release = 1;\n")
+            stylesheet = root / "style.css"
+            stylesheet.write_bytes(b"body { color: green; }\n")
+            output = root / "_site"
+            with mock.patch.object(pages, "ROOT", root), mock.patch.object(pages, "OUTPUT", output):
+                pages.build_site([source, script, stylesheet])
+            published = (output / "index.html").read_text(encoding="utf-8")
+            for asset in (script, stylesheet):
+                version = hashlib.sha256(asset.read_bytes()).hexdigest()[:12]
+                self.assertIn(f"{asset.relative_to(root).as_posix()}?v={version}", published)
+                self.assertEqual((output / asset.relative_to(root)).read_bytes(), asset.read_bytes())
+            self.assertIn('src="https://example.com/remote.js"', published)
+            self.assertIn('src="assets/crest.svg"', published)
+            self.assertEqual(source.read_text(encoding="utf-8"), html)
+
+    def test_entry_versions_change_only_when_referenced_content_changes(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            source = root / "index.html"
+            html = '<link href="style.css"><script src="app.js"></script>'
+            source.write_text(html, encoding="utf-8")
+            script = root / "app.js"
+            script.write_text("const release = 1;", encoding="utf-8")
+            stylesheet = root / "style.css"
+            stylesheet.write_text("body { color: green; }", encoding="utf-8")
+            output = root / "_site"
+            with mock.patch.object(pages, "ROOT", root), mock.patch.object(pages, "OUTPUT", output):
+                pages.build_site([source, script, stylesheet])
+                first = (output / "index.html").read_text(encoding="utf-8")
+                pages.build_site([source, script, stylesheet])
+                self.assertEqual((output / "index.html").read_text(encoding="utf-8"), first)
+                script.write_text("const release = 2;", encoding="utf-8")
+                pages.build_site([source, script, stylesheet])
+            second = (output / "index.html").read_text(encoding="utf-8")
+            first_versions = dict(re.findall(r'([\w./-]+)\?v=([a-f0-9]{12})', first))
+            second_versions = dict(re.findall(r'([\w./-]+)\?v=([a-f0-9]{12})', second))
+            self.assertNotEqual(first_versions["app.js"], second_versions["app.js"])
+            self.assertEqual(first_versions["style.css"], second_versions["style.css"])
+            self.assertEqual(source.read_text(encoding="utf-8"), html)
 
     def test_list_does_not_replace_existing_output(self):
         with tempfile.TemporaryDirectory() as temporary:

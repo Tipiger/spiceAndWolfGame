@@ -15,11 +15,11 @@
 - 马车空间和重量并行；食品按批次腐坏、先腐先出。商品图鉴保留原作依据，不将游戏供货地说成官方产地。
 - 不做旧档兼容或迁移。当前只接受v8且数值摘要匹配的存档，旧旅程需新开。
 
-UI已整理成统一的旅程栏与城镇操作区，移除旧版重复定位和散落按钮的样式。手机按实际地图区域定位马车，主要操作使用至少44px触控高度，兼顾安全区、长内容滚动与小屏交易确认。已在320×568至1440×900浏览器视口验证，尚未进行实体手机触摸验收。本轮只改界面，经营数值与存档结构不变；预览和截图见 `docs/validation.md`，本轮UI尚未发布线上。
+UI已整理成统一的旅程栏与城镇操作区，移除旧版重复定位和散落按钮的样式。手机按实际地图区域定位马车，主要操作使用至少44px触控高度，兼顾安全区、长内容滚动与小屏交易确认。已在320×568至1440×900浏览器视口验证，尚未进行实体手机触摸验收。本轮只改界面，经营数值与存档结构不变；预览和截图见 `docs/validation.md`，本轮UI已随Pages发布。
 
 商路已按试玩反馈改为连续土路：柔和路肩、沙土路面与细车辙，轻微不规则边缘融入手绘地图；未开放路段较淡。默认视图、全图和沿路行进已在浏览器验证，路径与经营数值保持不变。
 
-地图马车已按用户选择接入E版“两个大脑袋左右互挤”：两张透明PNG位于 `assets/wagon/companions-1.png` 和 `companions-2.png`，`content.js` 的 `mapWagonArt` 维护图片与说明；CSS每帧500ms，一秒完整循环，停靠和行进都播放。减少动态效果时静止在第一帧。旧静态马车与整车颠簸效果已移除，保留原路线上行进、锚点和定位标签；约伦兹标识移向右上以避开波罗森城名。人物比例不受真实人车尺度限制，头像占主体一半以上。来源与成功提示词见 `docs/assets-sources.md`。本轮为本地更新，尚未发布线上。
+地图马车已按用户选择接入E版“两个大脑袋左右互挤”：两张透明PNG位于 `assets/wagon/companions-1.png` 和 `companions-2.png`，`content.js` 的 `mapWagonArt` 维护图片与说明；CSS每帧500ms，一秒完整循环，停靠和行进都播放。减少动态效果时静止在第一帧。旧静态马车与整车颠簸效果已移除，保留原路线上行进、锚点和定位标签；约伦兹标识移向右上以避开波罗森城名。人物比例不受真实人车尺度限制，头像占主体一半以上。来源与成功提示词见 `docs/assets-sources.md`。本轮已随Pages发布，数值与存档不变。
 
 ## 维护边界
 
@@ -37,4 +37,6 @@ E版动画已经用户确认并接入游戏，节奏固定为500ms/帧；数值�
 
 当前测试、浏览器验收和截图见 `docs/validation.md`。公开仓库为 `https://github.com/Tipiger/spiceAndWolfGame`，本地 `main` 已关联 `origin/main`。工作流推送 `main` 后验证并发布 `_site/`，合并请求只验证；源码、数值表、运行素材及有效文档纳入版本管理，整套原作库、存档、缓存与发行包留本地。六张去水印小说插图仍属运行资产，原始扫描保留在原作库，来源说明见文档。发行ZIP只作离线输出。
 
-2026-11-05 已通过 GitHub Actions 手动部署与线上验收，入口 `https://tipiger.github.io/spiceAndWolfGame/`，强制 HTTPS。`main` 推送触发已配置，但本轮尚无自动运行记录，后续需确认；当前推送后可在工作流页手动 **Run workflow**，或运行 `~/.local/bin/gh workflow run pages.yml --repo Tipiger/spiceAndWolfGame --ref main` 完成发布。无需重新创建仓库或授权。GitHub CLI 已安装在本机 `~/.local/bin/gh`，本仓库凭据助手已关联该持久路径。自动存档仍留在浏览器，本地入口与线上入口可通过 JSON 导出、导入转移旅程。
+2026-11-05 本轮UI、E版动画、连续商路与小说PNG已通过GitHub Actions手动部署，站点为 `https://tipiger.github.io/spiceAndWolfGame/`，强制HTTPS。发布包51文件，约29.44MiB；首轮发布任务为 `https://github.com/Tipiger/spiceAndWolfGame/actions/runs/41963175892`。线上文件核对包含两张新动画帧，旧马车、旧小说JPEG、原作库和本地预览路径均不公开。验收发现浏览器沿用旧脚本缓存，现由 `scripts/build_pages.py` 只给发布产物入口的JS/CSS附内容摘要版本参数；离线源码入口不改。当前版本和线上验收以 `docs/validation.md` 与Actions最新成功任务为准。
+
+`main` 推送后仍未观察到自动创建运行记录；当前直接运行 `~/.local/bin/gh workflow run pages.yml --repo Tipiger/spiceAndWolfGame --ref main` 发布。GitHub CLI与凭据助手已配置，不需重建仓库或重新授权。自动存档仍留在浏览器，本地与线上通过JSON导出、导入转移。
