@@ -55,7 +55,7 @@ class PagesRelease(unittest.TestCase):
             (output / "old.zip").write_bytes(b"stale")
             with mock.patch.object(pages, "ROOT", root), mock.patch.object(pages, "OUTPUT", output):
                 pages.build_site([source])
-            self.assertEqual({file.name for file in output.iterdir()}, {"index.html", ".nojekyll"})
+            self.assertEqual({file.name for file in output.iterdir()}, {"index.html"})
             self.assertEqual((output / "index.html").read_bytes(), source.read_bytes())
             self.assertTrue(source.exists())
 

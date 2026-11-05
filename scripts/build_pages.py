@@ -55,7 +55,6 @@ def build_site(files: list[Path]) -> None:
         target = OUTPUT / source.relative_to(ROOT)
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(source, target)
-    (OUTPUT / ".nojekyll").write_text("", encoding="utf-8")
 
 
 def main(argv=None) -> None:
@@ -68,13 +67,12 @@ def main(argv=None) -> None:
     if arguments.list:
         for source in files:
             print(source.relative_to(ROOT).as_posix())
-        print(".nojekyll（发布时生成）")
-        print(f"\n共 {len(files) + 1} 个文件，"
+        print(f"\n共 {len(files)} 个文件，"
               f"未压缩 {sum(source.stat().st_size for source in files) / 1024 / 1024:.2f} MiB")
         print(f"目标：{OUTPUT}（仅列清单，未写入）")
         return
     build_site(files)
-    print(f"已生成：{OUTPUT}（{len(files) + 1} 个静态文件）")
+    print(f"已生成：{OUTPUT}（{len(files)} 个静态文件）")
 
 
 if __name__ == "__main__":

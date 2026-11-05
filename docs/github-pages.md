@@ -5,10 +5,10 @@
 ## 仓库与访问入口
 
 - 公开仓库：[Tipiger/spiceAndWolfGame](https://github.com/Tipiger/spiceAndWolfGame)，日常维护分支为 `main`。
-- Pages 入口（待首次部署）：[狼与香辛料 · 行商旅记](https://tipiger.github.io/spiceAndWolfGame/)。
+- 在线游玩：[狼与香辛料 · 行商旅记](https://tipiger.github.io/spiceAndWolfGame/)。
 - 构建与发布：[Verify and deploy GitHub Pages](https://github.com/Tipiger/spiceAndWolfGame/actions/workflows/pages.yml)。
 
-已上传游戏源码并将 Pages 来源配置为 GitHub Actions，HTTPS 已强制启用。2026-11-04 的 [GitHub 平台故障](https://www.githubstatus.com/incidents/smtdswd1h2w4) 影响 Git 操作与 Actions，首次工作流尚未启动，入口尚未上线。本地补充说明提交已保存；服务恢复后先 `git push` 同步，再检查工作流，必要时手动 **Run workflow**。无需重新创建仓库或登录授权。
+2026-11-05 已完成首次发布与线上浏览器验收。Pages 来源为 GitHub Actions，HTTPS 已强制启用；以后推送 `main` 后，完整验证成功才会更新站点。也可在工作流页面手动 **Run workflow**。
 
 ## 在其他电脑继续维护
 
@@ -59,7 +59,7 @@ git push
 
 选入 `assets/novel/` 的六张插图已经是游戏运行资产，和原作库里的完整参考材料分别管理；游戏不会读取被忽略的原作库。考据文档记录原作定位和改编依据，不包含整套原文。
 
-`npm run build:pages` 完整检查后生成 `_site/`，只包含游戏入口、样式、脚本、实际使用的素材、来源等 Markdown 文档与 `.nojekyll`。`python3 -B scripts/build_pages.py --list` 可以只查看清单。发布保留相对路径，因此仓库子目录和本地离线方式都可使用。
+`npm run build:pages` 完整检查后生成 `_site/`，只包含游戏入口、样式、脚本、实际使用的素材与来源等 Markdown 文档，共50个文件，约30.04 MiB。`python3 -B scripts/build_pages.py --list` 可以只查看清单。Actions 直接部署这些文件，不经过 Jekyll；发布保留相对路径，因此仓库子目录和本地离线方式都可使用。
 
 `.gitignore` 排除 `_site/`、离线发行包、依赖缓存、环境密钥文件、常见存档文件，以及整套 `assets/狼与香辛料原作/`。原作资料库保留在本地，不上传、不进入站点。选定的原作插图及来源标记作为游戏实际资产保留。源码、测试、策划表、文档和工作流由 Git 管理，站点构建不包含开发脚本、测试或策划表。
 

@@ -4,7 +4,7 @@
 
 ## 游玩
 
-[Pages 入口（待首次部署）](https://tipiger.github.io/spiceAndWolfGame/) · [GitHub 仓库](https://github.com/Tipiger/spiceAndWolfGame) · [自动发布状态](https://github.com/Tipiger/spiceAndWolfGame/actions/workflows/pages.yml)。维护方式与文件范围见 [GitHub 仓库与发布说明](docs/github-pages.md)。
+[在线游玩](https://tipiger.github.io/spiceAndWolfGame/) · [GitHub 仓库](https://github.com/Tipiger/spiceAndWolfGame) · [自动发布状态](https://github.com/Tipiger/spiceAndWolfGame/actions/workflows/pages.yml)。维护方式与文件范围见 [GitHub 仓库与发布说明](docs/github-pages.md)。
 
 直接用 Chrome、Safari 或 Edge 打开 `index.html`，macOS 可双击 `启动游戏.command`。运行文件已包含编译后的数值，不需要账号、网络或安装依赖。
 

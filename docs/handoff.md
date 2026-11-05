@@ -25,6 +25,6 @@
 
 本轮只新增用户选定的城市节庆，其余商队、渡口、短缺等点子仍需另行讨论，不预留占位实现。可按试玩反馈调整节庆与消息参数，主线暂不调整。
 
-当前测试、浏览器验收和截图见 `docs/validation.md`。公开仓库为 `https://github.com/Tipiger/spiceAndWolfGame`，本地 `main` 已关联 `origin/main`，游戏源码首个提交已上传。工作流推送 `main` 后验证并发布 `_site/`，合并请求只验证；源码、数值表、运行素材及有效文档纳入版本管理，整套原作库、存档、缓存与发行包留本地。六张选定小说插图仍属运行资产，保留原图及来源说明。发行ZIP只作离线输出。
+当前测试、浏览器验收和截图见 `docs/validation.md`。公开仓库为 `https://github.com/Tipiger/spiceAndWolfGame`，本地 `main` 已关联 `origin/main`。工作流推送 `main` 后验证并发布 `_site/`，合并请求只验证；源码、数值表、运行素材及有效文档纳入版本管理，整套原作库、存档、缓存与发行包留本地。六张选定小说插图仍属运行资产，保留原图及来源说明。发行ZIP只作离线输出。
 
-Pages 已设为 GitHub Actions 并强制 HTTPS，入口 `https://tipiger.github.io/spiceAndWolfGame/` 待首发。2026-11-04 GitHub 官方 Git操作/Actions 故障使补充文档推送和首次工作流受阻，网站尚未上线。恢复后先 `git push` 同步本地待推提交，再检查/手动触发 `pages.yml`，验证线上后更新本文、README与验证记录；无需重新创建仓库或授权。GitHub CLI 已安装在本机 `~/.local/bin/gh`，本仓库凭据助手已关联该持久路径。
+2026-11-05 已通过 GitHub Actions 首次部署与线上验收，入口 `https://tipiger.github.io/spiceAndWolfGame/`，强制 HTTPS。以后在本项目正常提交并 `git push` 即可触发验证和发布，无需重新创建仓库或授权。GitHub CLI 已安装在本机 `~/.local/bin/gh`，本仓库凭据助手已关联该持久路径。自动存档仍留在浏览器，本地入口与线上入口可通过 JSON 导出、导入转移旅程。
