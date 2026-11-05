@@ -1,6 +1,6 @@
 # 图片素材来源
 
-本文记录当前游戏实际使用的图片及生成提示词。所有运行素材均保存在项目内；官方 JPEG 和用户提供的小说插图保留原图，显示裁切由 CSS 完成。原作插画：文仓十；官方地图：出光秀匡。小说插图的原文件、卷幕场景和识别依据见 [novel-art.md](novel-art.md)。
+本文记录当前游戏实际使用的图片及生成提示词。所有运行素材均保存在项目内；官方 JPEG 保留原图；小说插图使用局部去水印展示版，原始扫描在原作库中保留。显示裁切由 CSS 完成。原作插画：文仓十；官方地图：出光秀匡。小说插图的原文件、卷幕场景和识别依据见 [novel-art.md](novel-art.md)。
 
 ## 官方图片
 
@@ -17,40 +17,66 @@
 
 ## 小说插图
 
-`assets/novel/` 中的六张图来自用户提供的原作资料，原样复制并核对内容。它们以竖幅插页或手账图册展示，保留全部画面和原有书源标记。具体清单与场景对应见 [novel-art.md](novel-art.md)；原作文字考据见 [novel-content.md](novel-content.md)。
+`assets/novel/` 中的六张PNG来自用户提供的原作资料，已按用户要求去除右下书源水印，仅遮挡区域采用AI补绘，完整构图与其余像素保留。原始JPEG及书源标记继续保存在原作库中。图册与剧情插页均引用当前PNG。清单、场景对应、补画限制及内置imagegen实际提示词见 [novel-art.md](novel-art.md)；文字考据见 [novel-content.md](novel-content.md)。
 
 ## AI 地图与道具
 
-以下五张均使用内置 `image_gen.imagegen` 生成。原文件直接复制到项目，保留真实 PNG 格式与 alpha。地图以官方原图为参考，交互锚点另见 [sources.md](sources.md)；局部山林、支流、纹理与建筑属于同人补画，不是官方设定的精确复原。
+以下地图、城镇与两帧马车均使用内置 `image_gen.imagegen` 生成。原文件直接复制到项目，保留真实 PNG 格式与 alpha。地图以官方原图为参考，交互锚点另见 [sources.md](sources.md)；局部山林、支流、纹理与建筑属于同人补画，不是官方设定的精确复原。
 
 | 本地文件 | 原始尺寸／格式 | 实际用途 |
 | --- | --- | --- |
 | `assets/world-map-v3.png` | 1052 × 1495，RGB PNG | 地形主底图，无文字或建筑，游戏另叠城镇、商路与标签。 |
-| `assets/wagon-v3.png` | 1536 × 1024，RGBA PNG | 一匹棕马与木质篷车，用于地图马车和货舱入口。 |
+| `assets/wagon/companions-1.png`、`companions-2.png` | 各512 × 341，RGBA PNG | 用户选定E版：赫萝与罗伦斯两颗大头左右互挤，迷你马车在下方；地图按500ms/帧交替。 |
 | `assets/village-v3.png` | 1254 × 1254，RGBA PNG | 农舍、谷仓、风车的麦田村庄主题。 |
 | `assets/harbor-v3.png` | 1254 × 1254，RGBA PNG | 仓库、码头、帆船与渡船的河港主题，无跨主河桥梁。 |
 | `assets/cathedral-v3.png` | 1254 × 1254，RGBA PNG | 石教堂、钟楼、市集与低城墙的教会城镇主题。 |
 
-马车、村庄、河港、教会城镇图的四角 alpha 均为0；近乎透明像素比例分别约48.2%、52.7%、54.2%、62.4%。三类城镇图表达地区主题，不代表具体建筑的原作还原。原作斯劳德主河以渡船通行，城内人工运河另有桥和水门；两者在文字与地理考据中区分。
+两帧马车、村庄、河港、教会城镇图的四角 alpha 均为0。三类城镇图表达地区主题，不代表具体建筑的原作还原。原作斯劳德主河以渡船通行，城内人工运河另有桥和水门；两者在文字与地理考据中区分。
 
 ## 实际生成提示词
 
-以下保留五个在用资产的成功请求原文。运行游戏无需访问生成器或外部文件。
+以下保留在用资产的成功请求原文。运行游戏无需访问生成器或外部文件。
 
-### wagon-v3.png
+### companions-1.png / companions-2.png
 
-- 工具：`image_gen.imagegen`。
-- 参数：`transparent_background=true`。
-- 未使用图像参考。
+- 工具：内置 `image_gen.imagegen`，原始E版生成与同一造型定向编辑均使用 `transparent_background=true`。
+- 原始E版仅以 `assets/hero.jpg` 为人物、服装与配色参考（官网来源见上文）；用户要求头像占主体一半以上，不使用真实人车比例。成品为AI同人补画，不是官方Q版插图。
+- 用户选中E版后，再以该版两帧图为编辑目标，改为赫萝先向右挤罗伦斯、罗伦斯再向左挤回来。最终原始帧图为1087×1447的RGBA PNG；按上下两等份机械裁切，每帧1087×723，最后一行透明边缘舍去，再用FFmpeg Lanczos等比缩到512×341，保留alpha。未用程序重绘人物。
+- 运行使用两张PNG，以CSS在一秒周期内交替显示，各500ms；不使用GIF量化图，减少半透明边缘损失。减少动态效果时停在第一帧。旧静态马车及整车颠簸动画已移除。
+
+原始E版成功请求：
 
 ```text
+工具：内置 image_gen.imagegen
+transparent_background=true
+参考图：assets/hero.jpg，角色、服装与配色参考；不沿用原图人物比例。
+原图来源：https://hasekuraisuna.jp/assets/img/top/slider/0@2x.jpg
+
 Use case: illustration-story.
-Asset type: transparent PNG cutout used as the player's traveling merchant wagon marker on an illustrated map.
-Primary request: A beautifully detailed medieval merchant's covered horse wagon, viewed at a slightly elevated three-quarter angle, traveling from left to right. The wooden wagon sits left/back, one natural chestnut horse is harnessed on its right/front. The whole horse, harness, wheels, wagon and canvas canopy must fit fully within the image with breathing room.
-Style/medium: delicate Japanese light-novel pen-and-pencil linework with translucent watercolor colors and subtle hand-painted texture. Detailed aged oak spokes and planks, cream canvas canopy folds, leather straps, coiled rope and one or two small tied supply bundles. Refined and believable, readable when reduced to a map marker, with a clear dark-brown silhouette.
-Composition: one isolated complete horse and covered cargo wagon, gently diagonal in a 3:2 landscape composition, the horse facing right. Warm cream, oak brown and chestnut colors, restrained golden light, visible functional wheels and plausible harness. No characters or riders.
-Background: actual fully transparent alpha, including all corners and spaces around the object. Only a very subtle isolated contact shadow immediately beneath wheels/hooves if needed; no ground tile, no landscape, no painted paper rectangle, no white backdrop.
-Constraints: no text, no labels, no logo, no map pin or glow, no UI, no decorative frame, no toys, no flat vector icon, no extra horse, anatomically plausible four legs.
+Asset type: TWO-FRAME transparent chibi sprite sheet, a new HEAD-DOMINANT map-marker proposal for a private Spice and Wolf fan game.
+Reference: hero.jpg is ONLY a reference for recognizable adult Holo and adult Kraft Lawrence facial identity, hairstyles and blue/red/brown travel-clothing colors. Do NOT copy the composition or realistic body proportions. Create a fresh super-deformed drawing.
+PRIMARY VISUAL REQUIREMENT: the two ENORMOUS character HEADS are the entire visual focus. Their faces, hair and Holo's wolf ears must occupy AT LEAST 65–75 PERCENT OF THE COLORED SUBJECT AREA. Think TWO OVERSIZED PORTRAIT AVATARS sharing a ridiculously tiny horse-cart base. Do not make a realistic wagon illustration with small passengers. No realistic relative scale between people, cart and horse. The two nearly round heads sit shoulder-to-shoulder and dominate the upper 70% of EACH sprite. Each head is approximately 40–45% of the entire sprite width and 60–65% of its height. Their tiny torsos are just little hints immediately under the heads, no long legs. Heads much taller than the cart and MUCH larger than the horse's head.
+Subject arrangement: Holo with copper-red long hair, two pointed brown wolf ears, wine-red eyes and a blue collar on the left; Lawrence with short silver-gray hair, gray-brown eyes, a little visible chin stubble and brown coat/white collar on the right. Both are recognizable adult protagonists rendered as extreme SD chibi, not realistic children. Holo's red checked waistcloth and fluffy brown pale-tip tail can be tiny accents. The enormous heads fit next to each other above a MINIATURE wooden merchant wagon in the bottom 20–25% of the sprite, with two tiny wooden wheels and a SMALL hint of cream canvas BEHIND THEIR NECKS, never a tall canopy behind or above their heads. A tiny simplified chestnut horse with a harness goes at the bottom right, facing right, no taller than the lower THIRD of a character head. Whole cart-and-horse group is at most the bottom 25–30% of subject height. Both enormous faces unobstructed, no canopy covering hair, eyes or ears. Keep wagon and horse only as cute readable travel symbols; massively prioritize avatars.
+Style: original Japanese light-novel character identity translated into exaggerated head-first SD illustration, warm cream, brown, copper, blue/red accents, precise brown ink contours and tasteful soft color. NOT generic cart clipart. No scenery, text, numeral, caption, frame, sign, logo, pin, badge circle, cloud, background tile or rendered checkerboard.
+Sprite sheet layout: portrait canvas, ONE column and TWO equal rows. Two repetitions of the SAME complete chibi-heads-with-tiny-cart group: top half FRAME 1, bottom half FRAME 2. Equal panel size, same camera, size, baseline and registration. Entire subject with at least 5% genuinely transparent alpha margin on every side inside EACH HALF. No labels, no central dividing line, nothing crossing the horizontal middle. Real transparency everywhere outside the subjects.
+Animation: exactly TWO consecutive frames for a gentle looping travel marker. Preserve all dimensions, head positions, hair silhouettes, cart body and wheel centers between frames. Frame 2 changes only small expressive features as specified, Holo's ear/tail tips, the tiny horse's alternating walking legs and wheel spoke angles. Keep the heads stable so they do not jitter or transform. No new props, no missing character, no third face, no extra horse, no added limbs. A small walking beat, no dramatic jump.
+VARIANT E: the most exaggerated option, two nearly touching giant portrait heads together cover about 80% of colored area. Their teeny cart is a little horizontal strip directly beneath their chins, wheels like small buttons. The tiny horse is a mini symbolic pony at lower right, much smaller than either face. Clean rounded dark-brown outlines, simplified cel/watercolor colors, very readable eyes, cheeks and silver/copper hair at 96 pixels. Holo cheerful open-eyed in frame 1 and a clear playful wink in frame 2; Lawrence remains open-eyed with a cute dry but affectionate smile. No large canopy: just a narrow cream folded-canvas hint behind the tiny shoulders. The two large heads MUST be even more dominant than a typical chibi plush.
+```
+
+左右互挤的成功编辑请求：
+
+```text
+Use case: precise-object-edit.
+Input image 1 is the EDIT TARGET: the selected E-version TWO-FRAME sprite sheet of Holo and Kraft Lawrence with extremely oversized heads on a tiny horse-cart. Preserve THIS exact design and illustration finish; do not invent a different variant.
+User's new animation direction: the two enormous heads playfully CROWD and NUDGE one another LEFT AND RIGHT while sitting on the miniature cart. This must be the main animation, clearly visible in two alternating frames even at 96 px. It is not a blinking animation and not just ear or horse-leg movement.
+Keep: the exact enormous copper-haired Holo and silver-haired Lawrence identities, red and gray-brown eyes, Lawrence's little chin stubble, the blue blouse, red checked cloth, brown coat and white collar, Holo's two wolf ears and fluffy tail, original warm clean linework and colors, the ridiculously tiny wooden wagon and tiny horse at lower right. HEADS REMAIN OVER 70% of the colored subject area, the cart/horse stay a small symbolic base under their chins. Do not make people or heads smaller.
+EXACT TWO-FRAME ACTION, one column / two equal rows:
+TOP HALF = FRAME 1, PUSH TO THE RIGHT: Holo on the LEFT leans her enormous head toward the RIGHT to crowd Lawrence. Her head tilts clockwise about 10 degrees and shifts right about 3–4% of the sprite width. Her right cheek presses against Lawrence's left cheek/temple. Lawrence's enormous head is visibly nudged RIGHT about 4–5% of the sprite width and tilts clockwise around 8 degrees; he wears a comically squeezed, mildly put-upon expression, with the contacted cheek subtly squashed. Holo has a playful smug grin. The contact is gentle and funny, not violent.
+BOTTOM HALF = FRAME 2, PUSH BACK TO THE LEFT: Lawrence on the RIGHT leans his enormous head LEFT to push back. His head tilts counterclockwise about 10 degrees and shifts left about 3–4% of the sprite width, pressing his left cheek against Holo's right cheek/temple. Holo is visibly nudged LEFT about 4–5% of the sprite width and tilts counterclockwise around 8 degrees with a cute squeezed pout or amused squint. Lawrence has a small mischievous smile. The big heads still touch; alternate left/right group pressure is unmistakable.
+The two extremes form a charming repeated left-right cheek-jostling loop. Both head centers visibly change in the SAME horizontal direction in each frame, then reverse, with opposing playful pressure between the pair. Give the giant head pair a subtle soft cartoon squash at their contact, without changing facial identity. Tiny necks/shoulders can bend minimally to support the poses. No hands pushing faces, no grabbing, fighting, pain, crying, anger, impact bursts, hearts, text or sweat drops. No hair growth, changing outfits, duplicate faces or extra ears.
+CRITICAL REGISTRATION: wagon body, tiny horse torso, both wheel centers and the baseline stay pixel-aligned between the two equal cells, same perspective/size/colors. Only the heads/neck hints and soft tail/ear follow-through move. Do NOT shift the whole cart or camera. Keep each complete sprite inside its own half with generous transparent horizontal margin so the sideways-moving ears and hair never crop. Extra canvas margin is allowed; preserve the extremely dominant HEAD-TO-CART ratio. Preserve whole tiny horse and wheels.
+Output: a PORTRAIT 1-column by 2-row transparent sprite sheet, exactly TWO complete groups. Top half and bottom half are equal dimensions. Genuine alpha transparency outside the subjects, including all corners and middle gutter. No background, brown backdrop, paper rectangle, checkerboard pixels, border, label, text, motion-symbol marks, logo, extra panels or scenery.
+
 ```
 
 ### world-map-v3.png

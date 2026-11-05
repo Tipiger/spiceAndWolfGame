@@ -30,7 +30,7 @@ class PagesRelease(unittest.TestCase):
         for document in (ROOT / "docs").glob("*.md"):
             self.assertIn(document.relative_to(ROOT).as_posix(), names)
         self.assertIn("assets/events/festival.png", names)
-        self.assertIn("assets/novel/v1-holo-travel-clothes.jpg", names)
+        self.assertIn("assets/novel/v1-holo-travel-clothes.png", names)
         for name in names:
             path = Path(name)
             self.assertTrue(

@@ -53,6 +53,7 @@
 .calendar-agenda-button strong{display:block;font:13px/1.7 var(--serif);font-weight:400;overflow-wrap:anywhere}
 .calendar-agenda-button small{display:block;font-size:9px;line-height:1.8;color:#9c947b;margin-top:3px}
 .calendar-rule-note{font-size:9px;line-height:1.9;color:#a49a7e;border-left:2px solid #b9a578;background:#eee8d94d;padding:10px 12px;margin:22px 0 0}
-@media(max-width:650px){
+@media(max-width:700px){
+  .calendar-nav{width:44px;height:44px}.calendar-intro,.calendar-selection p{font-size:12px}.calendar-legend{font-size:10px}
   .calendar-current{padding:13px 12px;gap:9px}.calendar-current strong{font-size:18px;letter-spacing:.5px}.calendar-current>span{font-size:10px;padding:3px 5px}.calendar-month-heading h3{font-size:19px;letter-spacing:1px}.calendar-weekdays,.calendar-month-grid{gap:4px}.calendar-day,.calendar-blank{min-height:45px}.calendar-day{padding:5px 5px 4px}.calendar-day-number{font-size:16px}.calendar-today-label{top:5px;right:4px;font-size:7px}.calendar-day-signals{gap:2px}.calendar-day-signals small{font-size:7px}.calendar-dot{width:4px;height:4px}.calendar-current small{font-size:8px}.calendar-event{gap:8px}.calendar-event h4{font-size:13px}.calendar-event-kind{font-size:8px;padding:2px 4px}.calendar-agenda-button{gap:10px}.calendar-agenda-date{font-size:12px;min-width:57px}.calendar-agenda-button strong{font-size:12px}.calendar-legend{gap:8px 12px}
 }

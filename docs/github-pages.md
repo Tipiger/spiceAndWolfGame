@@ -51,6 +51,7 @@ git push
 | `index.html`、根目录 CSS、`js/` | 纳入 | 纳入 |
 | `assets/` 中当前游戏实际使用的图片，包括六张选定小说插图 | 纳入，保留原图和书源标记 | 纳入 |
 | `design/数值策划.xlsx`、`scripts/`、`tests/`、`package.json` | 纳入 | 不发布 |
+| `design/previews/` 的本地设计候选与对比预览 | 仅留本地 | 不发布 |
 | `README.md`、`AGENTS.md`、`.github/`、`.gitignore` | 纳入 | 不发布 |
 | `docs/` 的考据、来源、有效提示词和维护说明 | 纳入 | 发布 Markdown，保证游戏来源链接可访问 |
 | `docs/screenshots/` 当前验收图 | 纳入 | 不发布 |
@@ -59,7 +60,7 @@ git push
 
 选入 `assets/novel/` 的六张插图已经是游戏运行资产，和原作库里的完整参考材料分别管理；游戏不会读取被忽略的原作库。考据文档记录原作定位和改编依据，不包含整套原文。
 
-`npm run build:pages` 完整检查后生成 `_site/`，只包含游戏入口、样式、脚本、实际使用的素材与来源等 Markdown 文档，共50个文件，约30.04 MiB。`python3 -B scripts/build_pages.py --list` 可以只查看清单。Actions 直接部署这些文件，不经过 Jekyll；发布保留相对路径，因此仓库子目录和本地离线方式都可使用。
+`npm run build:pages` 完整检查后生成 `_site/`，只包含游戏入口、样式、脚本、实际使用的素材与来源等 Markdown 文档，当前共51个文件，约29.44 MiB。`python3 -B scripts/build_pages.py --list` 可以只查看清单。Actions 直接部署这些文件，不经过 Jekyll；发布保留相对路径，因此仓库子目录和本地离线方式都可使用。
 
 `.gitignore` 排除 `_site/`、离线发行包、依赖缓存、环境密钥文件、常见存档文件，以及整套 `assets/狼与香辛料原作/`。原作资料库保留在本地，不上传、不进入站点。选定的原作插图及来源标记作为游戏实际资产保留。源码、测试、策划表、文档和工作流由 Git 管理，站点构建不包含开发脚本、测试或策划表。
 

@@ -4,6 +4,13 @@ globalThis.SW_CONTENT = {
   "title": "狼与香辛料 · 行商旅记",
   "chapterTitle": "银币风波 · 下一段商路",
   "subtitle": "麦田、河港，与两个人的北行商路",
+  "mapWagonArt": {
+    "frames": [
+      "assets/wagon/companions-1.png",
+      "assets/wagon/companions-2.png"
+    ],
+    "description": "赫萝与罗伦斯坐在迷你马车上，两颗大脑袋左右互挤"
+  },
   "mapNote": "依官方375×533世界地图重绘；城镇锚点保持官方图位置，虚线商路、行程与旅费为游戏设计。",
   "adaptationNote": "主线用第一卷的相遇、毛皮交易、银币风波及第二卷开端的胡椒交易提示原作位置。对白、公开市场清单、循环收购公告、拟制行商历、货舱规格、保质日数、四分之一银币结算、世界事件及酒馆消息为游戏改编。",
   "initial": {
@@ -273,7 +280,7 @@ globalThis.SW_CONTENT = {
       "speaker": "罗伦斯",
       "text": "先把毛皮带到帕兹欧，挣够下一程的盘缠。带上这些麦粒吧——赶路、做生意，我们一起走。",
       "scene": "dawn",
-      "image": "assets/novel/v1-holo-travel-clothes.jpg",
+      "image": "assets/novel/v1-holo-travel-clothes.png",
       "imageCaption": "第一卷 · 同行次日的旅装（旅途插页）"
     }
   ],
@@ -433,14 +440,14 @@ globalThis.SW_CONTENT = {
           "speaker": "赫萝",
           "text": "验货人只盯着皮毛，咱便请他闻闻果香。货款谈妥了，那桩银币会升值的消息，却还得再听一听。",
           "scene": "market",
-          "image": "assets/novel/v1-apples-on-wagon.jpg",
+          "image": "assets/novel/v1-apples-on-wagon.png",
           "imageCaption": "第一卷 · 采购苹果后的御者台（旅途插页）"
         },
         {
           "speaker": "罗伦斯",
           "text": "先把这笔货款记好，再看各城的收购截止日。要挣下一程的本钱，得让货物和日期都对得上。",
           "scene": "guild",
-          "image": "assets/novel/v1-apples-on-wagon.jpg",
+          "image": "assets/novel/v1-apples-on-wagon.png",
           "imageCaption": "第一卷 · 采购苹果后的御者台（旅途插页）"
         }
       ],
@@ -470,7 +477,7 @@ globalThis.SW_CONTENT = {
           "speaker": "旁白",
           "text": "新币含银量下降的线索，牵出了梅迪欧的布局。米隆商会接下旧币收购与王室交涉；地下水道里的追逼，则让罗伦斯重新认清了自己不能出卖的约定。",
           "scene": "guild",
-          "image": "assets/novel/v1-milone-negotiation.jpg",
+          "image": "assets/novel/v1-milone-negotiation.png",
           "imageCaption": "第一卷 · 米隆商会交涉"
         },
         {
@@ -526,7 +533,7 @@ globalThis.SW_CONTENT = {
           "speaker": "赫萝",
           "text": "汝总算记得先看路再算账了。走吧，御者台上还有咱的位置。",
           "scene": "dawn",
-          "image": "assets/novel/v2-merchant-banter.jpg",
+          "image": "assets/novel/v2-merchant-banter.png",
           "imageCaption": "回望北行途中 · 蜜渍水果的约定"
         }
       ],
@@ -803,37 +810,37 @@ globalThis.SW_CONTENT = {
   "novelArt": [
     {
       "key": "clothes",
-      "file": "v1-holo-travel-clothes.jpg",
+      "file": "v1-holo-travel-clothes.png",
       "title": "同行次日的旅装",
       "note": "第一卷 · 第一幕。赫萝换上罗伦斯的衣服，两人开始同行。"
     },
     {
       "key": "apples",
-      "file": "v1-apples-on-wagon.jpg",
+      "file": "v1-apples-on-wagon.png",
       "title": "马车上的苹果",
       "note": "第一卷 · 第三幕。帕兹欧采购后，赫萝在马车上享用苹果。"
     },
     {
       "key": "changer",
-      "file": "v1-money-changer.jpg",
+      "file": "v1-money-changer.png",
       "title": "怀兹的钱币摊",
       "note": "第一卷 · 第三幕。银币线索中的兑换商场景。"
     },
     {
       "key": "milone",
-      "file": "v1-milone-negotiation.jpg",
+      "file": "v1-milone-negotiation.png",
       "title": "米隆商会交涉",
       "note": "第一卷 · 第四幕。围绕银币成色与商会合作的交涉。"
     },
     {
       "key": "reunion",
-      "file": "v1-companions.jpg",
+      "file": "v1-companions.png",
       "title": "营救后的重逢",
       "note": "第一卷彩页 · 对应第五幕。米隆营救后，两人在马车上重逢。"
     },
     {
       "key": "banter",
-      "file": "v2-merchant-banter.jpg",
+      "file": "v2-merchant-banter.png",
       "title": "蜜渍水果的约定",
       "note": "第二卷 · 第一幕。北行途中，赫萝听罗伦斯谈起蜂蜜腌水果。"
     }

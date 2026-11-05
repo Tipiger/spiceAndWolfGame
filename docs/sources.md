@@ -106,7 +106,7 @@
 
 地图采用[第一期作品官方网站的世界地图](https://spicy-wolf.com/1st/original/world.html)为底本，原图是[375×533 的 JPEG](https://spicy-wolf.com/1st/assets/images/original/world_map.jpg)，原页面署名 **MAPイラスト / 出光秀匡**。公开页面与其 CSS 没有提供更高分辨率版本。第二期网站的[样式表](https://spicy-wolf.com/assets/css/original.css)实际引用的[新版地图](https://spicy-wolf.com/assets/images/original/world_map.jpg)也仍为 375×533；其北部补入了后续地名，但本版五个南部地点、海岸与两条大河的位置没有改变。本地保存的 `assets/world-map.jpg` 只用于官方原图对照；它本身仍是375×533的原始JPEG。地图主底图使用下述AI补绘。
 
-当前地图与道具使用五张AI资产：`assets/world-map-v3.png` 为1052×1495的地图补绘，`assets/wagon-v3.png` 为1536×1024的透明马车，`assets/village-v3.png`、`assets/harbor-v3.png`、`assets/cathedral-v3.png` 均为1254×1254的RGBA透明城镇图。村庄、港口和教会城镇图分别表达地区类型，不能称为原作特定建筑的官方复原。作者官网的 `assets/hero.jpg` 用于旅途宣传插画。素材来源与实际生成提示词见 [assets-sources.md](assets-sources.md)。
+当前地图与道具使用AI资产：`assets/world-map-v3.png` 为1052×1495的地图补绘，`assets/wagon/companions-1.png` 和 `companions-2.png` 为各512×341的透明Q版马车帧，赫萝与罗伦斯两颗大头左右互挤，每帧500ms；`assets/village-v3.png`、`assets/harbor-v3.png`、`assets/cathedral-v3.png` 均为1254×1254的RGBA透明城镇图。村庄、港口和教会城镇图分别表达地区类型，不能称为原作特定建筑的官方复原。作者官网的 `assets/hero.jpg` 用于旅途宣传插画。素材来源与实际生成提示词见 [assets-sources.md](assets-sources.md)。
 
 新地图以官方纵向海岸、温菲尔岛、两条主要河流和下述城镇锚点作为重绘依据，保留总体相对构图。它是AI生成的同人补画，不是官方提供的高清地图；局部树木、山林、支流和装饰地貌属于补画，不能声称与原图达到测绘级完全一致。默认南部视野、拖动和缩放只是查看方式；北方地名不代表本版全部可到访。[官方试读第3页](https://hasekuraisuna.jp/trial/spicywolf/page03.php)明确斯劳德主河没有桥、依靠渡船通行；本地第一卷第三幕979–995行另明确城内人工运河有桥和水门。帕兹欧简介区分主河与人工运河，不将“主河无桥”扩大为“整座城没有桥”。现地图主河采用渡口和码头语境。
 
