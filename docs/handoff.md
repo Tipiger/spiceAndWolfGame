@@ -39,4 +39,6 @@ E版动画已经用户确认并接入游戏，节奏固定为500ms/帧；数值�
 
 2026-11-05 本轮UI、E版动画、连续商路与小说PNG已通过GitHub Actions手动部署，站点为 `https://tipiger.github.io/spiceAndWolfGame/`，强制HTTPS。发布包51文件，约29.44MiB；首轮发布任务为 `https://github.com/Tipiger/spiceAndWolfGame/actions/runs/41963175892`。线上文件核对包含两张新动画帧，旧马车、旧小说JPEG、原作库和本地预览路径均不公开。验收发现浏览器沿用旧脚本缓存，现由 `scripts/build_pages.py` 只给发布产物入口的JS/CSS附内容摘要版本参数；离线源码入口不改。当前版本和线上验收以 `docs/validation.md` 与Actions最新成功任务为准。
 
+缓存修复发布任务 `https://github.com/Tipiger/spiceAndWolfGame/actions/runs/41964178986` 已成功；提交`b7066f6`的51个线上文件与发布包全部一致，桌面与390×844竖屏、市场卡片及E版500ms/帧动画均已在线验收，控制台无报错。旧页如仍留缓存，可刷新或使用 `https://tipiger.github.io/spiceAndWolfGame/?release=b7066f6` 载入；同源自动存档不受查询参数影响。
+
 `main` 推送后仍未观察到自动创建运行记录；当前直接运行 `~/.local/bin/gh workflow run pages.yml --repo Tipiger/spiceAndWolfGame --ref main` 发布。GitHub CLI与凭据助手已配置，不需重建仓库或重新授权。自动存档仍留在浏览器，本地与线上通过JSON导出、导入转移。
