@@ -28,14 +28,14 @@ ENTRY_RESOURCE = re.compile(
 def collect_pages_files() -> list[Path]:
     """Use the offline release's reviewed asset selection, without dev files."""
     selected = []
-    for source in offline_package.collect_files():
+    for source in offline_package.collect_files(include_image_sources=False):
         relative = source.relative_to(ROOT)
         parts = relative.parts
         if (
             relative.as_posix() == "index.html"
             or len(parts) == 1 and source.suffix == ".css"
             or parts[0] == "js" and source.suffix == ".js"
-            or parts[0] == "assets"
+            or parts[:2] == ("assets", "runtime")
             or len(parts) == 2 and parts[0] == "docs" and source.suffix == ".md"
         ):
             if any((ROOT / Path(*parts[:index])).is_symlink()

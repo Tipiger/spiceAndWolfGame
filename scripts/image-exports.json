@@ -1,0 +1,179 @@
+{
+  "encoder": "cwebp 1.2.0",
+  "options": [
+    "-q",
+    "92",
+    "-m",
+    "6",
+    "-sharp_yuv",
+    "-alpha_q",
+    "100",
+    "-exact",
+    "-metadata",
+    "none"
+  ],
+  "images": [
+    {
+      "source": "assets/source/map/cathedral-v3.png",
+      "output": "assets/runtime/map/cathedral-v3.webp",
+      "sourceSha256": "e726a8c347b4498638957a189157d07265bde05b100c463682022daf064e35b6",
+      "outputSha256": "d703d41ec38233701d68448dac7ff3ea34d0b663351baa28ef1c7c5d24a2d510"
+    },
+    {
+      "source": "assets/source/events/festival.png",
+      "output": "assets/runtime/events/festival.webp",
+      "sourceSha256": "c01cdc3add554749e38cd3d29135ef54c266cdf3d8fed3c76cafb4f67e8e7f86",
+      "outputSha256": "0a98f40d895201f084eaeb8690dc15481d731eb297ed7365f6bc4217eea15e71"
+    },
+    {
+      "source": "assets/source/events/harvest.png",
+      "output": "assets/runtime/events/harvest.webp",
+      "sourceSha256": "aef3d4955e416bda3f304700a74657e0f1fefa3fa746be001a1ab74731311643",
+      "outputSha256": "566cbb1e8abe8293696dfdd58fe0d242e3a766d1bc90313220ba288b25b1a2fa"
+    },
+    {
+      "source": "assets/source/events/rain.png",
+      "output": "assets/runtime/events/rain.webp",
+      "sourceSha256": "c1040056c479ae756275be6b6a384b920682487c0ebc31af8ce7b7c7a726100e",
+      "outputSha256": "4e7a30cbe7647a1735bee83fa4c1a5c7d83b6d06e7fd4584214951647dfd4a61"
+    },
+    {
+      "source": "assets/source/events/tavern.png",
+      "output": "assets/runtime/events/tavern.webp",
+      "sourceSha256": "bb3cd4c44faf0e32bac09f208b5a286180abe334e9a77b53057c29c46962ca5d",
+      "outputSha256": "9d01191a3f7b1ebbf35d9738846dd15ba2ae8a95dee57dbf244ab110db95287b"
+    },
+    {
+      "source": "assets/source/events/traveler.png",
+      "output": "assets/runtime/events/traveler.webp",
+      "sourceSha256": "7deed1de0926f5ba6c31b30a15bc93c4691f2ce75c45d816d4a37fad6e645ff1",
+      "outputSha256": "7de5dd87948f5c7bfc6a90bd8684e9c96fd143b444e0fd75ccfbb8ed45786b48"
+    },
+    {
+      "source": "assets/source/map/harbor-v3.png",
+      "output": "assets/runtime/map/harbor-v3.webp",
+      "sourceSha256": "571c75449454c6ff280228097f6bccffc93a8c9b1b9e60aeea38d276cd951c73",
+      "outputSha256": "c3a24fa6e68dd32988c3cf446284b5c865c8e49c32ad6b0d7288f72c6ff8391f"
+    },
+    {
+      "source": "assets/source/official/hero.jpg",
+      "output": "assets/runtime/official/hero.webp",
+      "sourceSha256": "55fa7b574422eec2ad133e4b29ca5b17933363216039983445f0ac7f438187ac",
+      "outputSha256": "a5c9cbb9514b88f92bf01b46c2d0decc5c3474ed7793528b596578948e87f118"
+    },
+    {
+      "source": "assets/source/official/holo.jpg",
+      "output": "assets/runtime/official/holo.webp",
+      "sourceSha256": "5baa546135aaf43f4be52dc83234365e462df6f035bd1ef92a26668860600cb4",
+      "outputSha256": "13cffa3d5182c43efe2856d90c56caabbd453ff822f06c5fc7794f4576fea90e"
+    },
+    {
+      "source": "assets/source/novel/hd/v1-apples-on-wagon-enhanced.png",
+      "output": "assets/runtime/novel/v1-apples-on-wagon-enhanced.webp",
+      "sourceSha256": "97926afda19df1b6b1c129aa96c4e21baecd0691b6dc39e0fd2721420f750fe0",
+      "outputSha256": "5661e7a2c92a812a1e41a0f9ccd5a3d743ec4dce9da014748abe2faeaa222e70"
+    },
+    {
+      "source": "assets/source/novel/hd/v1-companions-enhanced.png",
+      "output": "assets/runtime/novel/v1-companions-enhanced.webp",
+      "sourceSha256": "a80e9d67bf5850d490043fab6be9313eafe3ba27dcd018db8bd76898136ea471",
+      "outputSha256": "2a305fd1fcc85437c76e4d8db8c16c5e64954564c9ca1780be8aaa8ba5ffcf6c"
+    },
+    {
+      "source": "assets/source/novel/hd/v1-holo-travel-clothes-enhanced.png",
+      "output": "assets/runtime/novel/v1-holo-travel-clothes-enhanced.webp",
+      "sourceSha256": "05954c2d717ffce6d72372beac1da574bb25052cad0133aa8f509565e4487076",
+      "outputSha256": "3eccda11dcb1e5f1c824f98710a67d0c578e3bd1055eb69e4f9850b8476f8a58"
+    },
+    {
+      "source": "assets/source/novel/hd/v1-loneliness-enhanced.png",
+      "output": "assets/runtime/novel/v1-loneliness-enhanced.webp",
+      "sourceSha256": "a5493b43504c93a4062505816ce882385de0d7b9c4da44f4ddf106f4e92b1900",
+      "outputSha256": "1930b999daed8db3c470062ff104201902b1cd4247e9824349719a9195ceb49d"
+    },
+    {
+      "source": "assets/source/novel/hd/v1-milone-negotiation-enhanced.png",
+      "output": "assets/runtime/novel/v1-milone-negotiation-enhanced.webp",
+      "sourceSha256": "12941208315925bd77f6fbea9b17d3d7958e390c50a0f2fe97526750cb006972",
+      "outputSha256": "c888fbf22516e4a03678ccc79b66d2b1927a7387570aec1278dc97cfef96cfad"
+    },
+    {
+      "source": "assets/source/novel/hd/v1-money-changer-enhanced.png",
+      "output": "assets/runtime/novel/v1-money-changer-enhanced.webp",
+      "sourceSha256": "0fac2a0d891ef4b78fb22dae07d94e9079fedf6dc568f1b0a1a934896ccde42d",
+      "outputSha256": "14d3a97f019f105100defadcd2aee2e770f518654cda0bffd2221fc53e4400b0"
+    },
+    {
+      "source": "assets/source/novel/hd/v1-shelter-companions-enhanced.png",
+      "output": "assets/runtime/novel/v1-shelter-companions-enhanced.webp",
+      "sourceSha256": "9051184ec5e08a89d4e7b173942118f98e6afc3ecdfa521c3f2befa388e78c32",
+      "outputSha256": "46bcdd6670dfa185272be04acc0ddb1fe6cf5c574bfdc474e68312c4414231d0"
+    },
+    {
+      "source": "assets/source/novel/hd/v1-underground-flight-enhanced.png",
+      "output": "assets/runtime/novel/v1-underground-flight-enhanced.webp",
+      "sourceSha256": "2a60ef4da231d4adf5a940591a522b4ff2defbe152e4478949615d0a317cb3f5",
+      "outputSha256": "9c186577e923725fda7abbdab14166e35095e2c3c31bd78cf56c7698bc33b8a6"
+    },
+    {
+      "source": "assets/source/novel/hd/v1-window-warning-enhanced.png",
+      "output": "assets/runtime/novel/v1-window-warning-enhanced.webp",
+      "sourceSha256": "8bccb348109f69b5f41f66d936e2abeea90633d1b8d4036a95cff98d68aa0b1f",
+      "outputSha256": "2e59254a41f96ebaa8fae4b7bf5d5269e7e3882c27cfadc7f65caa146844a428"
+    },
+    {
+      "source": "assets/source/novel/hd/v1-wolf-revealed-enhanced.png",
+      "output": "assets/runtime/novel/v1-wolf-revealed-enhanced.webp",
+      "sourceSha256": "067e7cf92b50fef34289a5026c7516f4196375fe015c728d460e017959e7875d",
+      "outputSha256": "a01d21c555b6851dd9fd6177baefd234515138af79f801c1b436fd46a3a27d67"
+    },
+    {
+      "source": "assets/source/novel/hd/v1-zheren-proposal-enhanced.png",
+      "output": "assets/runtime/novel/v1-zheren-proposal-enhanced.webp",
+      "sourceSha256": "117eb3bffab858090642b685a9ba85b2c36cc3bae21d650d8d69b6acd7fbcc26",
+      "outputSha256": "7f0f9255d623af459d278ee20bf0ba0ac303e108958fea64295ff07f7ca6606f"
+    },
+    {
+      "source": "assets/source/novel/hd/v2-merchant-banter-enhanced.png",
+      "output": "assets/runtime/novel/v2-merchant-banter-enhanced.webp",
+      "sourceSha256": "9cefc98e1f9b6a63f44b73dddb138ab195aa67ca64682de27905e5ba0a5e8e86",
+      "outputSha256": "cd9293ab3489abbbd3fa482f519d411ee07df770e44867694222b785c53e8107"
+    },
+    {
+      "source": "assets/source/story/chapter-one-pattern.png",
+      "output": "assets/runtime/story/chapter-one-pattern.webp",
+      "sourceSha256": "23c6dc425e42095cb124e3c9e8f9126098b2c5a5004a437cec6be70b0e7bb85b",
+      "outputSha256": "dee8f059ee8c6be0fed48e6e9bdcf8bd17b866478bc64d88f311b818b7e22895"
+    },
+    {
+      "source": "assets/source/map/village-v3.png",
+      "output": "assets/runtime/map/village-v3.webp",
+      "sourceSha256": "9d757c4708c282a7a77375dd178ac37698167e30b33f9a04814e3b725f1e86cf",
+      "outputSha256": "691ea479be523c4f3be1df268aea7f6b15e367b9cb4d115f5a266d71e346f5ba"
+    },
+    {
+      "source": "assets/source/wagon/companions-1.png",
+      "output": "assets/runtime/wagon/companions-1.webp",
+      "sourceSha256": "a4e3f721edfe459dd2958e4e516dd03ef23e5e4101538f745aba2720cd043af0",
+      "outputSha256": "17691addac8dbac28ccd0adbe4272bb503baad41502bfae32ad5e61bf311d9e8"
+    },
+    {
+      "source": "assets/source/wagon/companions-2.png",
+      "output": "assets/runtime/wagon/companions-2.webp",
+      "sourceSha256": "980a00986804182fce399bba87c8379e90e49fdd0183928acb8c5f6b6dfc01e3",
+      "outputSha256": "c04453055b7783c331261c6e669ee1713bd6902d2fabd4bbf250fd00408777c1"
+    },
+    {
+      "source": "assets/source/map/world-map-v3.png",
+      "output": "assets/runtime/map/world-map-v3.webp",
+      "sourceSha256": "5c70e34aec852cc678238684b2f25a94d8bbec74c1e8470900c6efdc2adcf5d6",
+      "outputSha256": "5d6571541d975668e1f6bb72e72aae956cae2c846f3454b244e5c75663860cf6"
+    },
+    {
+      "source": "assets/source/official/world-map.jpg",
+      "output": "assets/runtime/official/world-map.webp",
+      "sourceSha256": "3ea298177d2ca6af5eec51eb096b420d8c9ba1831147f9d2d9d2af2bbc2951a3",
+      "outputSha256": "08d0cdd226feb31289e3b600bf5c3862e2b86619af7f70a212f876296be9e9d9"
+    }
+  ]
+}

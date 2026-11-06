@@ -172,7 +172,7 @@ def compile_tables(tables, content):
     goods = {g['id']: g for g in content['goods']}
     cities = {c['id']: c for c in content['cities']}
     notices = {n['id']: n for n in content['purchaseNotices']}
-    stories = {s['id']: s for s in content['story']}
+    stories = {s['id']: s for s in content['story'] if not s.get('narrativeOnly')}
     events = {event['id']: event for event in content['worldEvents']}
 
     def reference(rows, field, definitions, name_field=None, name_header=None, exact=True):

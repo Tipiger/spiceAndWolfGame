@@ -2,15 +2,15 @@
 (() => {
   'use strict';
 
-  function play({ pages, title, onFinish, host, app, drawers, esc, icon, close }) {
+  function play({ pages, title, background, onFinish, host, app, drawers, esc, icon, close }) {
     const document = host.ownerDocument;
     const find = selector => host.querySelector(selector);
     const reducedMotion = matchMedia('(prefers-reduced-motion:reduce)').matches;
+    const continueHint = matchMedia('(pointer:coarse)').matches ? '轻触继续' : '空格继续';
     let index = 0;
     let timer = null;
     let typing = false;
     let seen = 0;
-    let front = 0;
     let lastImage = '';
     let finished = false;
 
@@ -18,8 +18,7 @@
     drawers.inert = true;
     host.innerHTML = `
       <section class="vn-scene" role="dialog" aria-modal="true" aria-label="旅途故事">
-        <div class="vn-background" id="vn-bg-a"></div>
-        <div class="vn-background secondary" id="vn-bg-b"></div>
+        <div class="vn-background"></div>
         <div class="vn-shade"></div>
         <header class="vn-top">
           <span>狼与香辛料 · 行商旅记</span>
@@ -28,18 +27,21 @@
             <button id="vn-skip">跳过这一段</button>
           </div>
         </header>
-        <h2 class="vn-title"><small>原作路标 · 北行旅途</small>${esc(title)}</h2>
+        <h2 class="vn-title"><small>旅途纪事 · 一路向北</small>${esc(title)}</h2>
         <figure class="vn-novel-plate" hidden>
-          <img id="vn-novel-image" alt="文仓十原作插图">
+          <img id="vn-novel-image" alt="旅途画页">
           <figcaption id="vn-novel-caption"></figcaption>
         </figure>
         <section class="vn-dialog">
           <div class="vn-speaker" id="vn-speaker"></div>
-          <div class="vn-text" id="vn-text"></div>
+          <div class="vn-text" tabindex="0" aria-label="本页剧情">
+            <span class="vn-text-measure" aria-hidden="true"></span>
+            <span id="vn-text"></span>
+          </div>
           <footer class="vn-footer">
             <span id="vn-count"></span>
             <div>
-              <button class="vn-back" id="vn-back">上一句</button>
+              <button class="vn-back" id="vn-back">上一页</button>
               <button class="btn primary" id="vn-next">继续 ${icon('arrow')}</button>
             </div>
           </footer>
@@ -47,44 +49,31 @@
         <section class="vn-log" id="vn-log" hidden></section>
       </section>`;
 
-    function imageFor(page) {
-      if (page.image) {
-        return {
-          image: page.image,
-          caption: page.imageCaption || '原作旅途插页 · 插画：文仓十'
-        };
+    // Resolve from the page index so going back restores the same illustration.
+    // Only an explicit background page ends an illustration's run.
+    function imageFor() {
+      for (let i = index; i >= 0; i--) {
+        if (pages[i].background) break;
+        if (pages[i].image) return pages[i];
       }
-      const night = ['night', 'rain', 'underground', 'wolf'].includes(page.scene);
-      return {
-        image: night ? 'assets/night.jpg' : page.scene === 'wheat' ? 'assets/holo.jpg' : 'assets/hero.jpg',
-        caption: ''
-      };
+      return {};
     }
 
-    function setBackground(page) {
-      const { image, caption } = imageFor(page);
-      const book = image.startsWith('assets/novel/');
+    find('.vn-background').style.backgroundImage = `url('${background}')`;
+
+    function setBackground() {
+      const { image = '', imageCaption } = imageFor();
+      const caption = imageCaption || '同行的片刻';
+      const book = Boolean(image);
       find('.vn-scene').classList.toggle('with-novel-plate', book);
       find('.vn-novel-plate').hidden = !book;
       if (book) {
         find('#vn-novel-caption').textContent = caption;
         if (image !== lastImage) {
           find('#vn-novel-image').src = image;
-          find('#vn-novel-image').alt = caption + ' · 文仓十原作插图';
+          find('#vn-novel-image').alt = caption;
         }
       }
-      if (image === lastImage) return;
-
-      const incoming = find(front ? '#vn-bg-a' : '#vn-bg-b');
-      const outgoing = find(front ? '#vn-bg-b' : '#vn-bg-a');
-      incoming.style.backgroundImage = book ? 'none' : `url('${image}')`;
-      incoming.style.backgroundSize = image.includes('hero') ? 'cover' : 'auto 120%';
-      incoming.style.backgroundRepeat = 'no-repeat';
-      incoming.style.backgroundPosition = image.includes('hero') ? 'center 32%' : 'right 24%';
-      incoming.style.backgroundColor = '#2e423b';
-      incoming.style.opacity = '1';
-      outgoing.style.opacity = '0';
-      front = front ? 0 : 1;
       lastImage = image;
     }
 
@@ -92,14 +81,16 @@
       clearInterval(timer);
       const page = pages[index];
       seen = Math.max(seen, index);
-      setBackground(page);
+      setBackground();
       find('#vn-speaker').textContent = page.speaker || '旁白';
       find('#vn-count').textContent = String(index + 1).padStart(2, '0') + ' / ' +
-        String(pages.length).padStart(2, '0') + ' · 空格继续';
+        String(pages.length).padStart(2, '0') + ' · ' + continueHint;
       find('#vn-back').disabled = index === 0;
       find('#vn-next').innerHTML = (index === pages.length - 1 ? '回到地图' : '继续') + ' ' + icon('arrow');
 
       const text = find('#vn-text');
+      find('.vn-text-measure').textContent = page.text;
+      find('.vn-text').scrollTop = 0;
       text.textContent = '';
       typing = !reducedMotion;
       if (reducedMotion) {
@@ -168,7 +159,7 @@
     }
 
     find('#vn-next').onclick = next;
-    find('#vn-text').onclick = next;
+    find('.vn-text').onclick = next;
     find('#vn-back').onclick = back;
     find('#vn-skip').onclick = finish;
     find('#vn-history').onclick = () => {

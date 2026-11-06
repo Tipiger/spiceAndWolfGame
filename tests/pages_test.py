@@ -4,6 +4,7 @@ import contextlib
 import hashlib
 import importlib.util
 import io
+import json
 from pathlib import Path
 import re
 import sys
@@ -30,21 +31,40 @@ class PagesRelease(unittest.TestCase):
                 self.assertIn(reference, names)
         for document in (ROOT / "docs").glob("*.md"):
             self.assertIn(document.relative_to(ROOT).as_posix(), names)
-        self.assertIn("assets/events/festival.png", names)
-        self.assertIn("assets/novel/v1-holo-travel-clothes.png", names)
+        self.assertIn("assets/runtime/events/festival.webp", names)
+        self.assertIn("assets/runtime/novel/v1-holo-travel-clothes-enhanced.webp", names)
         for name in names:
             path = Path(name)
             self.assertTrue(
                 name == "index.html"
                 or len(path.parts) == 1 and path.suffix == ".css"
                 or path.parts[0] == "js" and path.suffix == ".js"
-                or path.parts[0] == "assets"
+                or path.parts[:2] == ("assets", "runtime")
                 or len(path.parts) == 2 and path.parts[0] == "docs" and path.suffix == ".md",
                 name,
             )
             self.assertNotIn("狼与香辛料原作", path.parts)
             self.assertNotIn(path.suffix.lower(), {".zip", ".xlsx"})
             self.assertFalse(any(part.startswith(".") for part in path.parts), name)
+
+    def test_image_sources_are_preserved_offline_but_only_exports_are_published(self):
+        exports = json.loads((ROOT / "scripts/image-exports.json").read_text(encoding="utf-8"))
+        site = {source.relative_to(ROOT).as_posix() for source in pages.collect_pages_files()}
+        offline = {source.relative_to(ROOT).as_posix() for source in pages.offline_package.collect_files()}
+        self.assertFalse(any(name.startswith("design/previews/") for name in offline))
+        self.assertFalse(any(name.startswith("assets/source/") for name in site))
+        for source in (ROOT / "assets/source").rglob("*"):
+            if source.is_file():
+                self.assertIn(source.relative_to(ROOT).as_posix(), offline)
+        runtime = {source.relative_to(ROOT).as_posix() for source in (ROOT / "assets/runtime").rglob("*") if source.is_file()}
+        self.assertEqual({name for name in site if name.startswith("assets/")}, runtime)
+        for entry in exports["images"]:
+            self.assertNotIn(entry["source"], site)
+            self.assertIn(entry["output"], site)
+            self.assertIn(entry["source"], offline)
+            self.assertIn(entry["output"], offline)
+            self.assertEqual(hashlib.sha256((ROOT / entry["source"]).read_bytes()).hexdigest(), entry["sourceSha256"])
+            self.assertEqual(hashlib.sha256((ROOT / entry["output"]).read_bytes()).hexdigest(), entry["outputSha256"])
 
     def test_rebuild_removes_stale_output_and_preserves_source(self):
         with tempfile.TemporaryDirectory() as temporary:
@@ -88,7 +108,7 @@ class PagesRelease(unittest.TestCase):
                 '<link rel="stylesheet" href="style.css">\n'
                 "<script defer src='js/app.js'></script>\n"
                 '<script src="https://example.com/remote.js"></script>\n'
-                '<img src="assets/crest.svg">\n'
+                '<img src="assets/runtime/crest.svg">\n'
             )
             source.write_text(html, encoding="utf-8")
             script = root / "js/app.js"
@@ -105,7 +125,7 @@ class PagesRelease(unittest.TestCase):
                 self.assertIn(f"{asset.relative_to(root).as_posix()}?v={version}", published)
                 self.assertEqual((output / asset.relative_to(root)).read_bytes(), asset.read_bytes())
             self.assertIn('src="https://example.com/remote.js"', published)
-            self.assertIn('src="assets/crest.svg"', published)
+            self.assertIn('src="assets/runtime/crest.svg"', published)
             self.assertEqual(source.read_text(encoding="utf-8"), html)
 
     def test_entry_versions_change_only_when_referenced_content_changes(self):

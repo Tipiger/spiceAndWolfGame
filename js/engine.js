@@ -1,7 +1,7 @@
 /* Spice & Wolf: a deterministic, browser-independent single-player economy. */
 (function (root) {
   'use strict';
-  const VERSION = 9;
+  const VERSION = 10;
   const MONEY_LIMIT = 1e9;
   const clone = value => JSON.parse(JSON.stringify(value));
   const money = root.SWMoney || (typeof require === 'function' ? require('./money.js') : null);
@@ -18,7 +18,7 @@
   const no = message => ({ ok: false, message });
   const mechanicNames = {
     trade: '货物买卖', travel: '旅行', free_trade: '自由行商',
-    loan: '商会借贷', purchase: '收购公告'
+    loan: '商会借贷', purchase: '收购公告', information: '酒馆消息'
   };
 
   class Game {
@@ -319,6 +319,7 @@
       return yes('已经记下这条消息。');
     }
     buyInformation(eventId = null) {
+      if ((this.data.story || []).some(s => s.reward?.unlockMechanics?.includes('information')) && !this.hasMechanic('information')) return no('完成帕兹欧的公告教学后，随主线开放酒馆消息。');
       if (this.state.journey) return no('正在商路上赶路，抵达城镇后再打听消息。');
       if (this.state.lastTavernDay === this.state.day) return no('今日已在酒馆打听过，明天再来吧。');
       const event = eventId === null
@@ -387,6 +388,7 @@
       return { available: false, canDeliver: false, completed, reason: completed ? '这期收购公告已经交付，不能重复收款。' : '这期收购公告已经结束，请查看最新公告。' };
     }
     deliverPurchase(publicationId) {
+      if ((this.data.story || []).some(s => s.reward?.unlockMechanics?.includes('purchase')) && !this.hasMechanic('purchase')) return no('完成毛皮交易主线后开放收购公告。');
       const check = this.getPurchaseStatus(publicationId); if (!check.canDeliver) return no(check.reason);
       const board = this.state.purchaseBoard.find(b => b.id === publicationId && b.status === 'published');
       if (!board) return no('这期收购公告已经结束，请查看最新公告。');
@@ -487,7 +489,7 @@
       if (this.state.journey) return no('马车正在商路上，请先完成当前行程。');
       const route = this.getAvailableRoutes().find(item => item.city === cityId);
       if (!route) return no('两座城镇之间没有直接相连的商路。');
-      if (!route.unlocked) return no('这条商路尚未开放。推进主线可解锁新的地区。');
+      if (!route.unlocked) return no('这条商路还走不通，先办妥眼前的事。');
       const maximumMultiplier = Math.max(1, ...Object.values(this.eventTypes).filter(event => event.scope === 'route').map(event => event.travelMultiplier));
       if (this.state.day + Math.ceil(route.days * maximumMultiplier) > 100000) return no('剩余行商历不足以完成这段商路。');
       const days = this._estimateTravelDays(this.state.city, cityId, 0), arrivalDay = this.state.day + days;
@@ -646,7 +648,7 @@
       const events = [];
       if (reward.money) { this.state.money = round(this.state.money + reward.money); events.push(`获得 ${fmt(reward.money)} 银币`); }
       for (const city of reward.unlockCities || []) if (this.cities[city] && !this.state.unlockedCities.includes(city)) { this.state.unlockedCities.push(city); events.push(`商路开放：${this.cities[city].name}`); }
-      for (const mechanic of reward.unlockMechanics || []) if (!this.state.unlockedMechanics.includes(mechanic)) { this.state.unlockedMechanics.push(mechanic); events.push(`新机制：${mechanicNames[mechanic] || '新的经营技巧'}`); }
+      for (const mechanic of reward.unlockMechanics || []) if (!this.state.unlockedMechanics.includes(mechanic)) { this.state.unlockedMechanics.push(mechanic); events.push(`行商门路：${mechanicNames[mechanic] || '新的经营技巧'}`); }
       for (const flag of reward.flags || []) if (!this.state.flags.includes(flag)) this.state.flags.push(flag);
       if (reward.relationship) this._gainRelationship(reward.relationship);
       return events;
@@ -675,7 +677,7 @@
     }
     takeLoan(amount) {
       if (this.state.journey) return no('正在商路上赶路，抵达城镇后才能借款。');
-      if (!this.hasMechanic('loan')) return no('商会借贷尚未解锁。');
+      if (!this.hasMechanic('loan')) return no('还未取得商会的借贷许可。');
       const rules = this.rules.loan;
       if (!coinAmount(amount, .25, rules.limit)) return no(`借款须为¼银币的整数倍，单次最多${fmt(rules.limit)}银币。`);
       if (this.state.debt + amount > rules.limit) return no(`商会提供的总信用额度为${fmt(rules.limit)}银币。`);

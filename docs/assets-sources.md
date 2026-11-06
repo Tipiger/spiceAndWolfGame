@@ -2,22 +2,42 @@
 
 本文记录当前游戏实际使用的图片及生成提示词。所有运行素材均保存在项目内；官方 JPEG 保留原图；小说插图使用局部去水印展示版，原始扫描在原作库中保留。显示裁切由 CSS 完成。原作插画：文仓十；官方地图：出光秀匡。小说插图的原文件、卷幕场景和识别依据见 [novel-art.md](novel-art.md)。
 
+## 制作源与发布图
+
+制作源统一保存在 `assets/source/`：小说高清PNG母版在 `novel/hd/`，原尺寸去水印修复输入在 `novel/input/`，其余按 `official/`、`map/`、`events/`、`story/`、`wagon/` 分类。游戏只引用 `assets/runtime/` 的最终展示图；网站不发布制作源，可编辑离线包保留全部制作源与展示图。详细清单见 [图片目录说明](../assets/README.md)。整套原作库与带书源标记的扫描保留原位。
+
+使用 `cwebp -q 92 -m 6 -sharp_yuv -alpha_q 100 -exact -metadata none`，保持当前母版尺寸、无损透明通道，颜色采用高质量有损压缩。当前27张编码母版共65.99 MiB，发布WebP约11.35 MiB，减少82.8%；另有1张SVG不转码。当前小说插图为1038–1046像素宽的高清中文增强版；增强前6.99 MiB的总量不再代表当前发布内容。
+
+编码器版本、完整对应关系和SHA-256见 `scripts/image-exports.json`；`npm run images`从母版重新导出，`npm run images:check`检查同步状态。目录整理前后68个文件摘要逐一一致，未重新编码或覆盖任何原文件。下文路径已更新，代码块内的实际成功提示词保留当时请求原文；当时的输入文件名对应当前制作源文件名。临时试转和对照图不进入仓库或发布包。
+
+## 第一卷剧情纹样背景
+
+`assets/source/story/chapter-one-pattern.png`，1536×1024。使用内置 imagegen 新生成的AI同人纹样，不是官方原作插图；选用A版亚麻散花，以麦穗、苹果与狼尾重复排布，供主线阅读器使用。没有人物或文字；游戏以独立CSS叠加浅色遮罩和文字框，原作插图页进一步压淡底纹。
+
+实际成功提示词：
+
+```text
+Use case: stylized-concept.
+Asset type: a flat all-over repeating ornamental PATTERN BOARD for the background of a Spice and Wolf volume-one visual novel, 1536x1024 landscape. The user wants the kind of patterned surface seen on wallpaper, a quilt, or a tablecloth: many small repeated motifs evenly distributed across the whole surface. It must look like a 2D textile / wallpaper design sample viewed straight on, NOT a scene, NOT an illustration of an actual room or draped fabric. No perspective, no horizon, no central focal illustration, no large blank center, no mockup, no folds or lighting effects. Richly arranged but quiet enough behind dialogue. Delicate hand-drawn brown ink and soft watercolor details recalling warm classic Japanese light-novel illustrations and medieval European travelling-merchant life; organic irregularities, subtle material grain. Motifs should be stylized ornaments, not realistic objects laid on a table or a game item inventory. Actual repeated ornament rhythm with 5–8 repeats across the width, 4–6 repeats vertically; some motifs continue past edges to suggest an endless surface. NO human characters, portraits, chibi characters, letters, numbers, calligraphy, words, titles, logos, watermarks, UI panels, menus, quest symbols or decorative outer border. No captions or labels on the image.
+Design A: Warm ivory and light oatmeal linen ground, airy small tossed repeat. Three motifs only: curved golden wheat sprigs, small muted russet-red apples with a sage leaf, and curled fluffy russet wolf tails with cream tips, each rendered as a refined little hand-drawn emblem. Repeat them in offset diagonal rows, each motif gently rotated; tiny muted sage leaf-pairs fill occasional gaps. About 65% calm cream ground remains visible, motifs similar small scale, light warm brown outlines, extremely restrained earthy watercolor. Pleasant gently playful harvest-and-wolf identity, adult tasteful textile design, no bright cartoon sticker outlines. Even spacing and density across entire sheet; absolutely no landscapes or foreground objects.
+```
+
 ## 官方图片
 
 下载日期：2026-11-03。优先使用原站明确提供的高分辨率资源，不将宣传图当成某座城镇或具体剧情现场的复原。
 
 | 本地文件 | 原始尺寸 | 实际用途 | 原始图片与来源 |
 | --- | --- | --- | --- |
-| `assets/hero.jpg` | 1488 × 1016 | 标题与旅途主视觉，罗伦斯与赫萝的官方宣传插画。 | [作者官网](https://hasekuraisuna.jp/) · [原图](https://hasekuraisuna.jp/assets/img/top/slider/0@2x.jpg) |
-| `assets/holo.jpg` | 640 × 772 | 第一卷赫萝麦田立绘，用于旅伴卡和开场。 | [作者官网](https://hasekuraisuna.jp/) · [原图](https://hasekuraisuna.jp/assets/img/top/slider/sp1.jpg) |
-| `assets/night.jpg` | 640 × 772 | 第三卷赫萝月夜立绘，仅作夜晚气氛，不冒充第一卷事件插图。 | [作者官网](https://hasekuraisuna.jp/) · [原图](https://hasekuraisuna.jp/assets/img/top/slider/sp3.jpg) |
-| `assets/world-map.jpg` | 375 × 533 | 官方原作世界地图，用于定位依据与原图对照。 | [原作官方网站](https://spicy-wolf.com/1st/original/world.html) · [原图](https://spicy-wolf.com/1st/assets/images/original/world_map.jpg) |
+| `assets/source/official/hero.jpg` | 1488 × 1016 | 标题与旅途主视觉，罗伦斯与赫萝的官方宣传插画。 | [作者官网](https://hasekuraisuna.jp/) · [原图](https://hasekuraisuna.jp/assets/img/top/slider/0@2x.jpg) |
+| `assets/source/official/holo.jpg` | 640 × 772 | 第一卷赫萝麦田立绘，用于旅伴卡和开场。 | [作者官网](https://hasekuraisuna.jp/) · [原图](https://hasekuraisuna.jp/assets/img/top/slider/sp1.jpg) |
+| `assets/source/official/night.jpg` | 640 × 772 | 第三卷赫萝月夜立绘，仅作夜晚气氛，不冒充第一卷事件插图。 | [作者官网](https://hasekuraisuna.jp/) · [原图](https://hasekuraisuna.jp/assets/img/top/slider/sp3.jpg) |
+| `assets/source/official/world-map.jpg` | 375 × 533 | 官方原作世界地图，用于定位依据与原图对照。 | [原作官方网站](https://spicy-wolf.com/1st/original/world.html) · [原图](https://spicy-wolf.com/1st/assets/images/original/world_map.jpg) |
 
-`assets/crest.svg` 是项目自绘的简化麦穗／狼头界面标记，不是官方商标素材。
+`assets/runtime/crest.svg` 是项目自绘的简化麦穗／狼头界面标记，不是官方商标素材。
 
 ## 小说插图
 
-`assets/novel/` 中的六张PNG来自用户提供的原作资料，已按用户要求去除右下书源水印，仅遮挡区域采用AI补绘，完整构图与其余像素保留。原始JPEG及书源标记继续保存在原作库中。图册与剧情插页均引用当前PNG。清单、场景对应、补画限制及内置imagegen实际提示词见 [novel-art.md](novel-art.md)；文字考据见 [novel-content.md](novel-content.md)。
+`assets/source/novel/input/` 保留12张原尺寸去水印修复输入，右下书源区域采用AI补绘，其余像素保留。`assets/source/novel/hd/` 保存后续高清增强及中文翻译PNG母版。游戏图册和剧情插页引用 `assets/runtime/novel/` 的WebP；原始JPEG及书源标记继续保存在原作库中。清单、场景对应、补画限制及内置imagegen实际提示词见 [novel-art.md](novel-art.md)；文字考据见 [novel-content.md](novel-content.md)。
 
 ## AI 地图与道具
 
@@ -25,11 +45,11 @@
 
 | 本地文件 | 原始尺寸／格式 | 实际用途 |
 | --- | --- | --- |
-| `assets/world-map-v3.png` | 1052 × 1495，RGB PNG | 地形主底图，无文字或建筑，游戏另叠城镇、商路与标签。 |
-| `assets/wagon/companions-1.png`、`companions-2.png` | 各512 × 341，RGBA PNG | 用户选定E版：赫萝与罗伦斯两颗大头左右互挤，迷你马车在下方；地图按500ms/帧交替。 |
-| `assets/village-v3.png` | 1254 × 1254，RGBA PNG | 农舍、谷仓、风车的麦田村庄主题。 |
-| `assets/harbor-v3.png` | 1254 × 1254，RGBA PNG | 仓库、码头、帆船与渡船的河港主题，无跨主河桥梁。 |
-| `assets/cathedral-v3.png` | 1254 × 1254，RGBA PNG | 石教堂、钟楼、市集与低城墙的教会城镇主题。 |
+| `assets/source/map/world-map-v3.png` | 1052 × 1495，RGB PNG | 地形主底图，无文字或建筑，游戏另叠城镇、商路与标签。 |
+| `assets/source/wagon/companions-1.png`、`companions-2.png` | 各512 × 341，RGBA PNG | 用户选定E版：赫萝与罗伦斯两颗大头左右互挤，迷你马车在下方；地图按500ms/帧交替。 |
+| `assets/source/map/village-v3.png` | 1254 × 1254，RGBA PNG | 农舍、谷仓、风车的麦田村庄主题。 |
+| `assets/source/map/harbor-v3.png` | 1254 × 1254，RGBA PNG | 仓库、码头、帆船与渡船的河港主题，无跨主河桥梁。 |
+| `assets/source/map/cathedral-v3.png` | 1254 × 1254，RGBA PNG | 石教堂、钟楼、市集与低城墙的教会城镇主题。 |
 
 两帧马车、村庄、河港、教会城镇图的四角 alpha 均为0。三类城镇图表达地区主题，不代表具体建筑的原作还原。原作斯劳德主河以渡船通行，城内人工运河另有桥和水门；两者在文字与地理考据中区分。
 
@@ -40,7 +60,7 @@
 ### companions-1.png / companions-2.png
 
 - 工具：内置 `image_gen.imagegen`，原始E版生成与同一造型定向编辑均使用 `transparent_background=true`。
-- 原始E版仅以 `assets/hero.jpg` 为人物、服装与配色参考（官网来源见上文）；用户要求头像占主体一半以上，不使用真实人车比例。成品为AI同人补画，不是官方Q版插图。
+- 原始E版仅以 `assets/source/official/hero.jpg` 为人物、服装与配色参考（官网来源见上文）；用户要求头像占主体一半以上，不使用真实人车比例。成品为AI同人补画，不是官方Q版插图。
 - 用户选中E版后，再以该版两帧图为编辑目标，改为赫萝先向右挤罗伦斯、罗伦斯再向左挤回来。最终原始帧图为1087×1447的RGBA PNG；按上下两等份机械裁切，每帧1087×723，最后一行透明边缘舍去，再用FFmpeg Lanczos等比缩到512×341，保留alpha。未用程序重绘人物。
 - 运行使用两张PNG，以CSS在一秒周期内交替显示，各500ms；不使用GIF量化图，减少半透明边缘损失。减少动态效果时停在第一帧。旧静态马车及整车颠簸动画已移除。
 
@@ -83,7 +103,7 @@ Output: a PORTRAIT 1-column by 2-row transparent sprite sheet, exactly TWO compl
 
 - 工具：`image_gen.imagegen`。
 - 参数：`transparent_background=false`。
-- 参考图：`assets/world-map.jpg`。
+- 参考图：`assets/source/official/world-map.jpg`。
 
 ```text
 Use case: illustration-story. Create a refined high resolution watercolor and fine-ink medieval fantasy atlas TERRAIN MAP, portrait ratio 750:1066. Attached image is a STRICT GEOGRAPHY reference. Preserve exactly its coastline, west sea, western island, river courses, south mountains and relative geographical locations. Remove all printed text, town/building illustrations, roads, compass and clouds. Terrain only: pale parchment, muted teal water, olive forests, ochre plains, delicate hachures and relief. Mainland on right, ocean on left, separate western island. The south river runs east-west at 86% image height, from x=13% to x=72%; mountains lie north of it at x=57%..77%, y=79%..85%. North river flows from x=32%,y=41% to x=98%,y=47%. Coast passes x=62% y=10%, x=38% y=40%, x=26% y=50%, x=19% y=55%, x=10% y=79%, x=13% y=86%, x=2% y=96%. Fine detailed professional light-novel pen-and-watercolor texture, airy autumn palette. No town, bridge, building, people, label, text, lettering, UI or compass. This is a private merchant game terrain background with interactive towns layered separately. Keep every geographical silhouette faithful to the reference.
@@ -124,17 +144,17 @@ Use case: illustration-story. Asset: a refined transparent PNG cathedral trading
 
 生成与编辑日期：2026-11-06。当前五张均使用内置 `image_gen.imagegen`，以同名旧彩色场景作为编辑目标及线稿、色彩与环境风格参考，移除赫萝与罗伦斯，改为环境及普通居民的场景。五张均为全彩 PNG，1536 × 1024、3:2 横幅，无文字、对话框、水印或界面；不再暗示玩家一行正在事件现场。
 
-原场景的线稿与色彩最初参照本项目保存的官网彩色宣传图 `assets/hero.jpg` 与赫萝立绘 `assets/holo.jpg`（来源链接见本文“官方图片”）。当前编辑只引用各自的旧场景，不再以两位主角作为画面主体；所有场景均为同人补画，不是原作具体事件的官方插图。
+原场景的线稿与色彩最初参照本项目保存的官网彩色宣传图 `assets/source/official/hero.jpg` 与赫萝立绘 `assets/source/official/holo.jpg`（来源链接见本文“官方图片”）。当前编辑只引用各自的旧场景，不再以两位主角作为画面主体；所有场景均为同人补画，不是原作具体事件的官方插图。
 
-调用参数：`transparent_background=false`；每张的 `referenced_image_paths` 仅含同名旧场景 `assets/events/<文件名>.png`。以下记录当前素材实际成功请求的完整提示词。
+调用参数：`transparent_background=false`；每张的 `referenced_image_paths` 仅含同名旧场景 `assets/source/events/<文件名>.png`。以下记录当前素材实际成功请求的完整提示词。
 
 | 本地文件 | 当前画面与用途 |
 | --- | --- |
-| `assets/events/rain.png` | 远景暴雨与泥泞商路为主体，突出密集雨幕、积水和深车辙；滑倒马匹与散架马车缩小为远处路边细节，无人物。 |
-| `assets/events/harvest.png` | 普通农人在粮仓货场验粮、搬运，展示粮袋、麦束、苹果及蜂蜜。 |
-| `assets/events/festival.png` | 普通居民与工人筹备城市节庆，搬运宴席物资。 |
-| `assets/events/tavern.png` | 普通居民在酒馆炉边听同行商人分享消息。 |
-| `assets/events/traveler.png` | 普通中年车夫在停靠的篷车旁与行路旅人交流消息。 |
+| `assets/source/events/rain.png` | 远景暴雨与泥泞商路为主体，突出密集雨幕、积水和深车辙；滑倒马匹与散架马车缩小为远处路边细节，无人物。 |
+| `assets/source/events/harvest.png` | 普通农人在粮仓货场验粮、搬运，展示粮袋、麦束、苹果及蜂蜜。 |
+| `assets/source/events/festival.png` | 普通居民与工人筹备城市节庆，搬运宴席物资。 |
+| `assets/source/events/tavern.png` | 普通居民在酒馆炉边听同行商人分享消息。 |
+| `assets/source/events/traveler.png` | 普通中年车夫在停靠的篷车旁与行路旅人交流消息。 |
 
 ### rain.png
 

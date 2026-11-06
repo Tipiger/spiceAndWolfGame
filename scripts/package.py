@@ -34,7 +34,8 @@ REQUIRED = {
 
 
 def permitted(relative: PurePosixPath) -> bool:
-    return not any(part in BLOCKED_PARTS or part.startswith(".") for part in relative.parts) \
+    return relative.parts[:2] != ("design", "previews") \
+        and not any(part in BLOCKED_PARTS or part.startswith(".") for part in relative.parts) \
         and relative.suffix.lower() not in {".pyc", ".pyo", ".zip"}
 
 
@@ -61,7 +62,7 @@ def release_label() -> str:
     return ".".join(match.groups()[:2]) if match[3] == "0" and not match[4] else version
 
 
-def collect_files() -> list[Path]:
+def collect_files(*, include_image_sources: bool = True) -> list[Path]:
     selected = {
         path for path in ROOT.iterdir()
         if path.is_file() and not path.is_symlink()
@@ -83,11 +84,13 @@ def collect_files() -> list[Path]:
     for source in sorted(runtime):
         content = source.read_text(encoding="utf-8")
         for reference in LOCAL_ASSET.findall(content):
+            relative = PurePosixPath(reference)
+            if relative.parts[:2] != ("assets", "runtime"):
+                raise ValueError(f"Runtime must reference assets/runtime: {reference} ({source.name})")
             # Dynamic novel paths end at the directory; their file names are
             # declared separately in content.js and resolved by BARE_MEDIA below.
             if reference.endswith("/"):
                 continue
-            relative = PurePosixPath(reference)
             asset = ROOT / relative
             if not permitted(relative) or asset not in all_assets:
                 raise ValueError(f"Missing or excluded runtime asset: {reference} ({source.name})")
@@ -96,7 +99,15 @@ def collect_files() -> list[Path]:
             candidates = by_name.get(filename, [])
             if len(candidates) != 1:
                 raise ValueError(f"Runtime asset name must resolve once: {filename} ({source.name})")
+            if candidates[0].relative_to(ROOT).parts[:2] != ("assets", "runtime"):
+                raise ValueError(f"Runtime must reference assets/runtime: {filename} ({source.name})")
             selected.add(candidates[0])
+
+    # The offline release remains a complete editable project. Pages requests
+    # only runtime exports so original PNG/JPEG files are never preloaded there.
+    if include_image_sources:
+        selected.update(files_in(ROOT / "assets/source"))
+        selected.add(ROOT / "assets/README.md")
 
     relative_names = {path.relative_to(ROOT).as_posix() for path in selected}
     missing = REQUIRED - relative_names

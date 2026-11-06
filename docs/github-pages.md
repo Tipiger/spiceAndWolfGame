@@ -49,7 +49,8 @@ git push
 | 内容 | Git 仓库 | Pages 站点 |
 | --- | --- | --- |
 | `index.html`、根目录 CSS、`js/` | 纳入 | 纳入 |
-| `assets/` 中当前游戏实际使用的图片，包括六张选定小说插图 | 纳入，保留原图和书源标记 | 纳入 |
+| `assets/runtime/` 中实际使用的 WebP 展示图与 SVG 标记 | 纳入 | 纳入 |
+| `assets/source/` 的母版、原尺寸修复输入和官网原图 | 纳入，保留来源；可编辑离线包同时包含 | 不发布、不预加载 |
 | `design/数值策划.xlsx`、`scripts/`、`tests/`、`package.json` | 纳入 | 不发布 |
 | `design/previews/` 的本地设计候选与对比预览 | 仅留本地 | 不发布 |
 | `README.md`、`AGENTS.md`、`.github/`、`.gitignore` | 纳入 | 不发布 |
@@ -58,9 +59,9 @@ git push
 | `assets/狼与香辛料原作/` 整套小说正文、原始扫描图及参考文件 | 不纳入，保留本地 | 不发布 |
 | `_site/`、`releases/`、缓存、依赖、环境密钥、导出存档、Excel 临时锁文件 | 不纳入 | 不作为源文件发布 |
 
-选入 `assets/novel/` 的六张插图已经是游戏运行资产，和原作库里的完整参考材料分别管理；游戏不会读取被忽略的原作库。考据文档记录原作定位和改编依据，不包含整套原文。
+选入 `assets/source/novel/` 的插图母版、修复输入和 `assets/runtime/novel/` 的 WebP 展示图，和原作库里的完整参考材料分别管理；游戏不会读取被忽略的原作库。制作源与展示图对应关系和摘要见 `scripts/image-exports.json`。考据文档记录原作定位和改编依据，不包含整套原文。
 
-`npm run build:pages` 完整检查后生成 `_site/`，只包含游戏入口、样式、脚本、实际使用的素材与来源等 Markdown 文档，当前共51个文件，约29.44 MiB。`python3 -B scripts/build_pages.py --list` 可以只查看清单。发布产物入口的本地JS/CSS使用内容SHA256前12位的`?v=`参数，避免旧缓存脚本与更新后的素材混用；源码`index.html`保持原路径，离线方式不变。Actions直接部署静态文件，不经过Jekyll，仓库子目录仍使用相对路径。
+`npm run build:pages` 完整检查后生成 `_site/`，只包含游戏入口、样式、脚本、实际使用的素材与来源等 Markdown 文档，本地WebP版本的28张运行图片共11.35 MiB，站点约11.88 MiB，尚未发布线上。`python3 -B scripts/build_pages.py --list` 可以只查看清单。发布产物入口的本地JS/CSS使用内容SHA256前12位的`?v=`参数，避免旧缓存脚本与更新后的素材混用；源码`index.html`保持原路径，离线方式不变。Actions直接部署静态文件，不经过Jekyll，仓库子目录仍使用相对路径。
 
 `.gitignore` 排除 `_site/`、离线发行包、依赖缓存、环境密钥文件、常见存档文件，以及整套 `assets/狼与香辛料原作/`。原作资料库保留在本地，不上传、不进入站点。选定的原作插图及来源标记作为游戏实际资产保留。源码、测试、策划表、文档和工作流由 Git 管理，站点构建不包含开发脚本、测试或策划表。
 

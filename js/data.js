@@ -23,7 +23,7 @@
     return { ...item, ...row, description: expand(item.description, { ...row, unit: good.unit, goodName: good.name }) };
   });
   const story = content.story.map(item => {
-    const row = balance.story.find(row => row.id === item.id);
+    const row = item.narrativeOnly ? {} : balance.story.find(row => row.id === item.id);
     const conditions = { ...item.conditions };
     if (conditions.soldAt) conditions.soldAt = { ...conditions.soldAt, quantity: row.saleQuantity };
     if (row.purchaseCompleted) conditions.purchaseCompleted = row.purchaseCompleted;
