@@ -8,7 +8,7 @@
 - 在线游玩：[狼与香辛料 · 行商旅记](https://tipiger.github.io/spiceAndWolfGame/)。
 - 构建与发布：[Verify and deploy GitHub Pages](https://github.com/Tipiger/spiceAndWolfGame/actions/workflows/pages.yml)。
 
-2026-11-06 已发布初遇跨页高清插图，保留最新剧情、操作引导、高清中文插图和分目录WebP素材。游戏提交`e98b431`，[发布任务](https://github.com/Tipiger/spiceAndWolfGame/actions/runs/42194220645)成功；94项检查、62个线上文件摘要核对及桌面/手机开场插图验收通过。Pages来源为GitHub Actions，HTTPS已启用。`main`推送仍未自动创建任务，本次通过既有工作流手动发布；后续如仍无任务，在工作流选择 **Run workflow**，分支选`main`。
+2026-11-06 已发布手机版图文叠层与收起看图、缩小马车、点击道路查路程，以及两端左下角引导按钮，保留1秒高亮循环和初遇高清插图。游戏提交`e4fdb4c`，[发布任务](https://github.com/Tipiger/spiceAndWolfGame/actions/runs/42196726441)成功；完整94项检查、62个线上文件摘要核对通过，本地320/390宽及桌面交互验收通过。线上手机入口加载新版脚本，无错误/警告，已有旅程未改动。Pages来源为GitHub Actions，HTTPS已启用。`main`推送仍未自动创建任务，本次通过既有工作流手动发布；后续如仍无任务，在工作流选择 **Run workflow**，分支选`main`。
 
 ## 在其他电脑继续维护
 
