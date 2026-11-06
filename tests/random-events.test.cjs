@@ -11,10 +11,11 @@ function scenario(types = [rain, harvest]) {
     routes: [{ from: 'a', to: 'b', days: 3, cost: 4 }, { from: 'b', to: 'c', days: 2, cost: 3 }],
     story: [{ id: 'open', title: '启程', conditions: {}, reward: {} }],
     initial: { city: 'a', money: 500, unlockedCities: ['a', 'b', 'c'], unlockedMechanics: ['trade', 'travel', 'loan'], inventory: {}, costBasis: {} },
+    newsNoInformation: require('../js/content.js').newsNoInformation,
     newsTemplates: structuredClone(require('../js/content.js').newsTemplates),
     worldEvents: structuredClone(types)
   });
-  data.rules.events = { dailyChance: 0, forecastDays: 2, travelerChance: 0, tavernCost: 2 };
+  data.rules.events = { dailyChance: 0, rainForecastDays: 2, harvestForecastExtraDays: 0, festivalForecastExtraDays: 2, travelerChance: 0, tavernCost: 2 };
   Object.assign(data.rules.market, { priceAmplitude: 0, restockDivisor: 20, minimumRestock: 1 });
   return data;
 }
@@ -29,13 +30,13 @@ test('events are scheduled before anyone buys information and hidden forecasts s
   const data = scenario([harvest]); data.rules.events.dailyChance = 1;
   const game = new Game(data, { seed: 0 });
   assert.equal(game.state.worldEvents.length, 1);
-  assert.equal(game.state.worldEvents[0].startDay, game.state.day + 2);
+  assert.equal(game.state.worldEvents[0].startDay, game.state.day + game.state.worldEvents[0].endDay - game.state.worldEvents[0].startDay + 1);
   assert.equal(game.state.worldEvents[0].good, 'wheat');
   const before = structuredClone(game.state);
   assert.deepEqual(game.getKnownEvents(), []); assert.deepEqual(game.getLocalEvents(), []);
   game.quote('wheat'); game.quote('wheat', 'b'); game.previewTravel('b');
   assert.deepEqual(game.state, before);
-  game.advanceDays(2);
+  game.advanceDays(before.worldEvents[0].startDay - game.state.day);
   const started = before.worldEvents[0], stock = game.state.markets[started.target].wheat.stock;
   assert.equal(stock, 40);
   assert.equal(game.quote('wheat', started.target).buy, data.cities.find(city => city.id === started.target).market.wheat.price * .7);
@@ -83,14 +84,15 @@ test('the same rain affects both directions and known forecasts alone change tra
   const game = new Game(data, { seed: 4 }); forecast(game, 'rain', 'a~b', 3, 5);
   assert.equal(game.previewTravel('a').days, 3);
   ok(game.buyInformation()); assert.equal(game.previewTravel('a').days, 3);
-  game.advanceDays(1); ok(game.buyInformation()); assert.equal(game.previewTravel('a').days, 5);
+  game.advanceDays(1); ok(game.buyInformation(game.state.worldEvents[0].id)); assert.equal(game.previewTravel('a').days, 5);
   const result = ok(game.travel('a')); assert.equal(result.arrived, true); assert.equal(game.state.day, 7);
   assert.equal(game.state.travelLog[0].days, 5);
 });
 
-test('tavern information charges only for a new event and failures preserve the entire state', () => {
+test('tavern charges for empty inquiries and rejects unaffordable or repeated attempts', () => {
   const game = new Game(scenario([rain]), { seed: 5 });
-  let before = structuredClone(game.state); assert.equal(game.buyInformation().ok, false); assert.deepEqual(game.state, before);
+  const empty = ok(game.buyInformation()); assert.equal(empty.cost, 2); assert.equal(game.state.money, 498); game.advanceDays(1);
+  let before;
   forecast(game, 'rain', 'a~b', 3, 4);
   game.state.money = 1; before = structuredClone(game.state); assert.equal(game.buyInformation().ok, false); assert.deepEqual(game.state, before);
   game.state.money = 10; const information = ok(game.buyInformation()); assert.equal(information.cost, 2); assert.equal(game.state.money, 8); assert.equal(information.event.reports[0].source, 'tavern');
@@ -121,7 +123,7 @@ test('all town operations reject during travel without changing date, money or r
 });
 
 test('edited rain multipliers preserve valid fractional progress through saves', () => {
-  const data = scenario([rain]); data.worldEvents[0].travelMultiplier = 3; data.rules.events.forecastDays = 1;
+  const data = scenario([rain]); data.worldEvents[0].travelMultiplier = 3; data.rules.events.rainForecastDays = 1;
   const game = new Game(data, { seed: 70 }); forecast(game, 'rain', 'a~b', 2, 4); ok(game.startTravel('b'));
   for (let day = 0; day < 3; day++) { ok(game.advanceTravelDay()); ok(new Game(data, { seed: 71 }).importSave(game.exportSave())); }
   assert.ok(Math.abs(game.getTravelStatus().progress - 1) < .000002);
@@ -179,7 +181,7 @@ test('festivals are scheduled only in towns selling suitable goods and never inv
   for (let seed = 0; seed < 30; seed++) {
     const game = new Game(data, { seed }), event = game.state.worldEvents[0];
     assert.ok(['a', 'b'].includes(event.target)); assert.equal(event.good, null);
-    game.advanceDays(2); const active = game.getActiveEvents()[0];
+    game.advanceDays(event.startDay - game.state.day); const active = game.getActiveEvents()[0];
     assert.deepEqual(active.goods, event.target === 'a' ? ['wine', 'apple'] : ['cheese']);
     assert.equal(game.quote('cheese', 'a'), null); assert.equal(game.quote('wine', 'b'), null); assert.equal(game.quote('wine', 'c'), null);
     ok(new Game(data, { seed: 999 }).importSave(game.exportSave()));
@@ -221,7 +223,7 @@ test('credible hints omit all exact goods, dates and multipliers, then a later r
   for (const field of ['startDay', 'endDay', 'good', 'goods', 'description', 'travelMultiplier', 'stockMultiplier', 'priceMultiplier', 'dailyConsumption', 'eligibleGoods', 'minDays', 'maxDays']) assert.equal(Object.hasOwn(hint, field), false, field);
   assert.equal(hint.message.includes('小麦'), false); assert.equal(hint.message.includes(game.formatDate(3)), false);
   const before = structuredClone(game.state); assert.equal(game.buyInformation().ok, false); assert.deepEqual(game.state, before);
-  game.advanceDays(1); const cash = game.state.money; const result = ok(game.buyInformation()); const detail = game.getKnownEvents()[0];
+  game.advanceDays(1); const cash = game.state.money; const result = ok(game.buyInformation(event.id)); const detail = game.getKnownEvents()[0];
   assert.equal(game.state.money, cash - 2); assert.equal(result.report.detail, 'detail'); assert.equal(detail.detailLevel, 'detail');
   assert.equal(detail.startDay, 3); assert.equal(detail.endDay, 5); assert.deepEqual(detail.goods, ['wheat']); assert.equal(detail.priceMultiplier, .7);
   assert.equal(detail.message.includes('乙城的小麦的小麦'), false); assert.ok(detail.message.includes('小麦'));
@@ -246,13 +248,13 @@ test('every active event becomes fully public globally and active details are ne
   assert.equal(game.state.city, 'a'); const active = game.getActiveEvents()[0];
   assert.equal(active.isPublic, true); assert.equal(active.detailLevel, 'detail'); assert.equal(active.startDay, 3); assert.equal(active.endDay, 4); assert.deepEqual(active.reports, []);
   assert.deepEqual(game.getKnownEvents(), game.getActiveEvents()); assert.deepEqual(game.getLocalEvents(), []);
-  const before = structuredClone(game.state); assert.equal(game.buyInformation().ok, false); assert.deepEqual(game.state, before);
+  const cash = game.state.money; ok(game.buyInformation()); assert.equal(game.state.money, cash - 2);
   assert.equal(game.getEventNotices()[0].kind, 'started'); assert.equal(game.getEventNotices()[0].source, 'public');
 });
 
 test('heard, detail and started notices persist safe snapshots in FIFO order even after their event expires', () => {
   const data = scenario([rain]), game = new Game(data, { seed: 36 }); forecast(game, 'rain', 'a~b', 3, 3);
-  ok(game.buyInformation()); game.advanceDays(1); ok(game.buyInformation()); game.advanceDays(2);
+  ok(game.buyInformation()); game.advanceDays(1); ok(game.buyInformation(game.state.worldEvents[0].id)); game.advanceDays(2);
   assert.deepEqual(game.getKnownEvents(), []); assert.deepEqual(game.state.worldEvents, []);
   const notices = game.getEventNotices(); assert.deepEqual(notices.map(notice => notice.kind), ['heard', 'detail', 'started']);
   assert.equal(Object.hasOwn(notices[0].event, 'startDay'), false); assert.equal(notices[1].event.isPublic, false); assert.equal(notices[2].event.isPublic, true);
@@ -274,11 +276,11 @@ test('public notices are created once while synchronous travel and rest can cont
 
 test('strict saves reject forged report layers, leaked hints, altered notification snapshots and out-of-order acknowledgements', () => {
   const data = scenario([rain]), game = new Game(data, { seed: 38 }); forecast(game, 'rain', 'a~b', 3, 4);
-  ok(game.buyInformation()); game.advanceDays(1); ok(game.buyInformation());
+  ok(game.buyInformation()); game.advanceDays(1); ok(game.buyInformation(game.state.worldEvents[0].id));
   const saved = JSON.parse(game.exportSave()), target = new Game(data, { seed: 39 }), before = structuredClone(target.state);
   const corruptions = [
     state => state.worldEvents[0].reports[0].detail = 'detail',
-    state => state.worldEvents[0].reports[1].day = 1,
+    state => state.worldEvents[0].reports[1].day = 0,
     state => state.worldEvents[0].reports[1].source = 'public',
     state => state.worldEvents[0].reports[0].text = '不允许的持久字段',
     state => state.worldEvents[0].reports.push({ source: 'traveler', day: 2, detail: 'detail' }),
@@ -301,4 +303,39 @@ test('strict saves reject forged report layers, leaked hints, altered notificati
   for (const corrupt of corruptions) { const damaged = structuredClone(saved); corrupt(damaged.state); assert.equal(target.importSave(damaged).ok, false); assert.deepEqual(target.state, before); }
   ok(target.importSave(saved)); assert.deepEqual(target.state, game.state);
   const old = structuredClone(saved); old.version = 7; assert.equal(target.importSave(old).ok, false);
+});
+
+test('targeted follow-up can complete a traveler hint on the same day and tavern quota persists across towns and saves', () => {
+  const data = scenario([rain]), game = new Game(data, {seed: 71});
+  const event = forecast(game, 'rain', 'a~b', 3, 4);
+  game._reportEvent(event, 'traveler', []);
+  ok(game.buyInformation(event.id));
+  assert.deepEqual(event.reports.map(r => r.day), [1, 1]);
+  assert.equal(event.reports[1].detail, 'detail');
+  const copy = new Game(data); ok(copy.importSave(game.exportSave()));
+  copy.state.city = 'b'; copy.state.visited.push('b');
+  const before = structuredClone(copy.state);
+  assert.equal(copy.buyInformation().ok, false); assert.deepEqual(copy.state, before);
+  copy.advanceDays(1); const cash = copy.state.money; ok(copy.buyInformation());
+  assert.equal(copy.state.money, cash - data.rules.events.tavernCost);
+});
+
+test('new inquiries leave known hints untouched, selected follow-ups reject invalid targets without spending', () => {
+  const game = new Game(scenario([rain]), {seed: 72});
+  const first = forecast(game, 'rain', 'a~b', 3, 4), second = forecast(game, 'rain', 'b~c', 3, 4);
+  game._reportEvent(first, 'traveler', []);
+  const before = structuredClone(game.state);
+  assert.equal(game.buyInformation('missing').ok, false); assert.deepEqual(game.state, before);
+  assert.equal(ok(game.buyInformation()).event.id, second.id);
+  assert.equal(first.reports.length, 1);
+});
+
+test('production lead times depend on event duration and support simultaneous starts', () => {
+  const data = structuredClone(require('../js/data.js')); data.rules.events.dailyChance = 1;
+  for (const type of data.worldEvents) {
+    const d = structuredClone(data); d.worldEvents = [type];
+    const game = new Game(d, {seed: 81}), event = game.state.worldEvents[0], duration = event.endDay - event.startDay + 1;
+    assert.equal(event.startDay-game.state.day, type.id === 'rain' ? 2 : duration + (type.id === 'festival' ? 2 : 0));
+    for (let day=0;day<20;day++) { game.advanceDays(1); ok(new Game(d).importSave(game.exportSave())); }
+  }
 });

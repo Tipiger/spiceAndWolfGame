@@ -1,7 +1,7 @@
 /* Generated from design/数值策划.xlsx. Run npm run balance; do not edit. */
 (function (root) {
   const balance = {
-  "revision": "f18ff0a18b5c6020",
+  "revision": "e05b73881624798e",
   "releaseVersion": "0.8",
   "rules": {
     "market": {
@@ -37,9 +37,11 @@
     },
     "events": {
       "dailyChance": 0.28,
-      "forecastDays": 2,
+      "rainForecastDays": 2,
       "travelerChance": 0.35,
-      "tavernCost": 2
+      "tavernCost": 2,
+      "harvestForecastExtraDays": 0,
+      "festivalForecastExtraDays": 2
     }
   },
   "initial": {
@@ -265,7 +267,7 @@
       "destination": "pasloe",
       "good": "apple",
       "quantity": 8,
-      "unitPrice": 8.5,
+      "unitPrice": 6.5,
       "initialPublishDay": 1,
       "listingDays": 8,
       "refreshDays": 4
@@ -275,7 +277,7 @@
       "destination": "pasloe",
       "good": "wine",
       "quantity": 6,
-      "unitPrice": 23.5,
+      "unitPrice": 19.75,
       "initialPublishDay": 1,
       "listingDays": 8,
       "refreshDays": 4
@@ -285,7 +287,7 @@
       "destination": "yorentz",
       "good": "wheat",
       "quantity": 8,
-      "unitPrice": 10.25,
+      "unitPrice": 8.25,
       "initialPublishDay": 1,
       "listingDays": 6,
       "refreshDays": 4
@@ -295,7 +297,7 @@
       "destination": "yorentz",
       "good": "apple",
       "quantity": 10,
-      "unitPrice": 8.5,
+      "unitPrice": 6.5,
       "initialPublishDay": 1,
       "listingDays": 10,
       "refreshDays": 4
@@ -305,7 +307,7 @@
       "destination": "pazzio",
       "good": "wheat",
       "quantity": 12,
-      "unitPrice": 10,
+      "unitPrice": 8.25,
       "initialPublishDay": 1,
       "listingDays": 9,
       "refreshDays": 4
@@ -315,7 +317,7 @@
       "destination": "pazzio",
       "good": "cheese",
       "quantity": 10,
-      "unitPrice": 13,
+      "unitPrice": 10.75,
       "initialPublishDay": 1,
       "listingDays": 8,
       "refreshDays": 4
@@ -325,7 +327,7 @@
       "destination": "poroson",
       "good": "apple",
       "quantity": 12,
-      "unitPrice": 7.5,
+      "unitPrice": 5.75,
       "initialPublishDay": 1,
       "listingDays": 8,
       "refreshDays": 4
@@ -335,7 +337,7 @@
       "destination": "poroson",
       "good": "honey",
       "quantity": 8,
-      "unitPrice": 35,
+      "unitPrice": 31.5,
       "initialPublishDay": 1,
       "listingDays": 14,
       "refreshDays": 4
@@ -345,7 +347,7 @@
       "destination": "ruvenheigen",
       "good": "pepper",
       "quantity": 6,
-      "unitPrice": 60.5,
+      "unitPrice": 54.25,
       "initialPublishDay": 1,
       "listingDays": 12,
       "refreshDays": 4
@@ -355,7 +357,7 @@
       "destination": "ruvenheigen",
       "good": "salt",
       "quantity": 10,
-      "unitPrice": 13.5,
+      "unitPrice": 12,
       "initialPublishDay": 1,
       "listingDays": 6,
       "refreshDays": 4

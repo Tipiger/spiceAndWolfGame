@@ -1,7 +1,7 @@
 /* Spice & Wolf: a deterministic, browser-independent single-player economy. */
 (function (root) {
   'use strict';
-  const VERSION = 8;
+  const VERSION = 9;
   const MONEY_LIMIT = 1e9;
   const clone = value => JSON.parse(JSON.stringify(value));
   const money = root.SWMoney || (typeof require === 'function' ? require('./money.js') : null);
@@ -32,7 +32,7 @@
       const seed = options.seed ?? (Object.keys(this.eventTypes).length ? Math.floor(Math.random() * 0x100000000) : 0);
       if (!whole(seed, 0, 0xffffffff)) throw new Error('随机种子应为32位无符号整数。');
       const eventRules = data.rules.events;
-      if (Object.keys(this.eventTypes).length && (!eventRules || !whole(eventRules.forecastDays, 1, 30) || !validNumber(eventRules.dailyChance, 0, 1) || !validNumber(eventRules.travelerChance, 0, 1) || !coinAmount(eventRules.tavernCost, .25, 1000000))) throw new Error('缺少有效的事件数值。');
+      if (Object.keys(this.eventTypes).length && (!eventRules || !whole(eventRules.rainForecastDays, 1, 30) || !whole(eventRules.harvestForecastExtraDays, 0, 30) || !whole(eventRules.festivalForecastExtraDays, 0, 30) || !validNumber(eventRules.dailyChance, 0, 1) || !validNumber(eventRules.travelerChance, 0, 1) || !coinAmount(eventRules.tavernCost, .25, 1000000))) throw new Error('缺少有效的事件数值。');
       for (const event of Object.values(this.eventTypes)) {
         if (!['route', 'market', 'city'].includes(event.scope) || !whole(event.minDays, 1, 30) || !whole(event.maxDays, event.minDays, 30)) throw new Error('事件持续时间或作用范围无效。');
         if (!whole(event.travelMultiplier, 1, 4) || !whole(event.stockMultiplier, 1, 4) || !validNumber(event.priceMultiplier, .1, 4) || !whole(event.dailyConsumption, 0, 100000)) throw new Error('事件倍率无效。');
@@ -63,7 +63,7 @@
         wagon: clone(initial.wagon),
         cargo: [], cargoCounter: 0, purchaseHistory: [], purchaseCompleted: 0, spoiledGoods: {}, purchaseBoard: [],
         randomState: seed, eventCounter: 0, worldEvents: [], journey: null,
-        noticeCounter: 0, eventNotices: []
+        noticeCounter: 0, eventNotices: [], lastTavernDay: null
       };
       for (const t of data.purchaseNotices || []) {
         if (!whole(t.listingDays, 1, 365) || !whole(t.refreshDays, 1, 365) || !whole(t.initialPublishDay, 1, 100000)) throw new Error('收购公告的发布周期无效。');
@@ -211,12 +211,16 @@
         priceMultiplier: definition.priceMultiplier, dailyConsumption: definition.dailyConsumption });
       return view;
     }
+    _eventForecastDays(definition, duration) {
+      return definition.scope === 'route' ? this.rules.events.rainForecastDays
+        : duration + (definition.scope === 'market' ? this.rules.events.harvestForecastExtraDays : this.rules.events.festivalForecastExtraDays);
+    }
     _scheduleWorldEvent() {
       const types = Object.values(this.eventTypes);
       if (!types.length || this._random() >= this.rules.events.dailyChance) return;
       const definition = types[Math.floor(this._random() * types.length)];
       const duration = definition.minDays + Math.floor(this._random() * (definition.maxDays - definition.minDays + 1));
-      const startDay = this.state.day + this.rules.events.forecastDays, endDay = startDay + duration - 1;
+      const startDay = this.state.day + this._eventForecastDays(definition, duration), endDay = startDay + duration - 1;
       let targets;
       if (definition.scope === 'route') targets = (this.data.routes || []).map(route => ({ target: this._routeKey(route.from, route.to), good: null }));
       else if (definition.scope === 'city') targets = this.data.cities.filter(city => Object.keys(city.market || {}).some(good => definition.eligibleGoods.includes(good))).map(city => ({ target: city.id, good: null }));
@@ -250,8 +254,7 @@
       return event ? this.eventTypes[event.type].travelMultiplier : 1;
     }
     _canReportEvent(event) {
-      return event.startDay > this.state.day && event.reports.length < 2 &&
-        (!event.reports.length || event.reports[event.reports.length - 1].day < this.state.day);
+      return event.startDay > this.state.day && event.reports.length < 2;
     }
     _queueEventNotice(event, kind, source, report, events) {
       const view = this._eventView(event), message = view.message;
@@ -315,13 +318,22 @@
       this.state.eventNotices.shift();
       return yes('已经记下这条消息。');
     }
-    buyInformation() {
+    buyInformation(eventId = null) {
       if (this.state.journey) return no('正在商路上赶路，抵达城镇后再打听消息。');
-      const event = this.state.worldEvents.find(event => this._canReportEvent(event));
-      if (!event) return no('酒馆暂时没有新的消息或细节，不收取银币。');
+      if (this.state.lastTavernDay === this.state.day) return no('今日已在酒馆打听过，明天再来吧。');
+      const event = eventId === null
+        ? this.state.worldEvents.find(event => this._canReportEvent(event) && !event.reports.length)
+        : this.state.worldEvents.find(event => event.id === eventId && this._canReportEvent(event) && event.reports.length === 1);
+      if (eventId !== null && !event) return no('请选择一条尚未生效、还没问清的初闻。');
       const cost = this.rules.events.tavernCost;
       if (this.state.money < cost) return no('手头银币不够支付打听消息的费用。');
       this.state.money = round(this.state.money - cost);
+      this.state.lastTavernDay = this.state.day;
+      if (!event) {
+        const message = this.data.newsNoInformation;
+        this.log(message);
+        return yes(message, { cost, events: [] });
+      }
       const events = [], report = this._reportEvent(event, 'tavern', events);
       return yes(events[0], { events, event: this._eventView(event), report: clone(report), cost });
     }
@@ -739,6 +751,7 @@
       check(whole(state.tradeCount,0,10000000)&&coinAmount(state.totalProfit,-MONEY_LIMIT,MONEY_LIMIT),'交易账簿无效。');
       list(state.visited,id=>Object.hasOwn(this.cities,id),'到访记录');check(state.visited.includes(state.city),'当前城镇缺少到访记录。');
       check(validNumber(state.relationship,0,this.rules.relationship.max)&&typeof state.chapterComplete==='boolean'&&state.chapterComplete===(state.storyIndex>=(this.data.story||[]).length),'关系或章节完成状态无效。');
+      check(state.lastTavernDay===null||whole(state.lastTavernDay,this.data.initial.day,state.day),'酒馆打听日期无效。');
       check(state.lastGiftDay===null||whole(state.lastGiftDay,1,state.day),'旅途日期无效。');check(state.loanDueDay===null||whole(state.loanDueDay,1,100000),'借款日期无效。');
       check(Array.isArray(state.travelLog)&&state.travelLog.length<=100,'旅行记录无效。');for(const t of state.travelLog)check(plain(t)&&Object.hasOwn(this.cities,t.from)&&Object.hasOwn(this.cities,t.to)&&whole(t.day,1,state.day)&&whole(t.days,1,100000),'旅行路线无效。');
       check(Array.isArray(state.journal)&&state.journal.length<=80,'日志无效。');for(const entry of state.journal)check(plain(entry)&&whole(entry.day,1,state.day)&&typeof entry.text==='string'&&entry.text.length<=1000,'日志条目无效。');
@@ -750,8 +763,8 @@
       check(plain(event) && Object.keys(event).length === keys.length && Object.keys(event).every(key => keys.includes(key)), '世界事件字段无效。');
       const definition = Object.hasOwn(this.eventTypes, event.type) && this.eventTypes[event.type];
       check(definition && typeof event.id === 'string' && /^event-[1-9]\d*$/.test(event.id) && Number(event.id.slice(6)) <= state.eventCounter, '世界事件类型或编号无效。');
-      const forecast = this.rules.events.forecastDays;
-      check(whole(event.startDay, this.data.initial.day + forecast, state.day + forecast) && whole(event.endDay, event.startDay + definition.minDays - 1, event.startDay + definition.maxDays - 1) && (allowEnded || event.endDay >= state.day), '世界事件时间无效。');
+      const forecast = this._eventForecastDays(definition, event.endDay - event.startDay + 1);
+      check(whole(event.startDay, this.data.initial.day + 1, state.day + forecast) && whole(event.endDay, event.startDay + definition.minDays - 1, event.startDay + definition.maxDays - 1) && (allowEnded || event.endDay >= state.day), '世界事件时间无效。');
       if (definition.scope === 'route') {
         check(event.good === null && (this.data.routes || []).some(route => event.target === this._routeKey(route.from, route.to)), '暴雨商路无效。');
       } else {
@@ -762,7 +775,7 @@
       check(Array.isArray(event.reports) && event.reports.length <= 2, '事件消息记录无效。');
       for (let index = 0; index < event.reports.length; index++) {
         const report = event.reports[index];
-        check(plain(report) && Object.keys(report).length === 3 && Object.keys(report).every(key => ['source', 'day', 'detail'].includes(key)) && ['tavern', 'traveler'].includes(report.source) && report.detail === (index === 0 ? 'hint' : 'detail') && whole(report.day, Math.max(this.data.initial.day, event.startDay - forecast), Math.min(state.day, event.startDay - 1)) && (!index || report.day > event.reports[index - 1].day), '事件消息来源、层级或日期无效。');
+        check(plain(report) && Object.keys(report).length === 3 && Object.keys(report).every(key => ['source', 'day', 'detail'].includes(key)) && ['tavern', 'traveler'].includes(report.source) && report.detail === (index === 0 ? 'hint' : 'detail') && whole(report.day, Math.max(this.data.initial.day, event.startDay - forecast), Math.min(state.day, event.startDay - 1)) && (!index || report.day >= event.reports[index - 1].day), '事件消息来源、层级或日期无效。');
       }
       return definition;
     }
@@ -803,7 +816,7 @@
         }
         check(event, '通知缺少对应事件或完整快照。');
         if (notice.kind !== 'started' && event.startDay <= state.day) check(pendingStarts.has(notice.eventId), '未确认的消息缺少后续事件开始通知。');
-        const expected = this._eventView(event, notice.day);
+        const expected = this._eventView(notice.kind === 'started' ? event : { ...event, reports: event.reports.slice(0, notice.kind === 'heard' ? 1 : 2) }, notice.day);
         check(viewKeys.every(key => same(view[key], expected[key])) && notice.message === expected.message && typeof notice.message === 'string' && notice.message.length <= 1000, '事件通知快照或文本遭到修改。');
         if (notice.kind === 'started') check(notice.day === event.startDay && view.isPublic && view.isActive, '事件开始通知日期无效。');
         else check(same(notice.report, event.reports[notice.kind === 'heard' ? 0 : 1]) && !view.isPublic, '消息通知与报告不一致。');
@@ -815,11 +828,11 @@
       if (!Object.keys(this.eventTypes).length) check(!state.worldEvents.length && state.eventCounter === 0, '没有启用世界事件。');
       const minimumNotices = state.worldEvents.reduce((count, event) => count + (Array.isArray(event?.reports) ? event.reports.length : 0) + (event?.startDay <= state.day ? 1 : 0), 0);
       check(state.noticeCounter >= minimumNotices, '世界事件缺少已产生的通知记录。');
-      const ids = new Set(), starts = new Set();
+      const ids = new Set();
       for (const event of state.worldEvents) {
         this._validateEventRecord(event, state, check);
-        check(!ids.has(event.id) && !starts.has(event.startDay), '世界事件编号或排定日期重复。');
-        ids.add(event.id); starts.add(event.startDay);
+        check(!ids.has(event.id), '世界事件编号或排定日期重复。');
+        ids.add(event.id);
       }
       for (let index = 0; index < state.worldEvents.length; index++) {
         const event = state.worldEvents[index];

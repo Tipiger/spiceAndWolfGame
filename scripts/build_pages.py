@@ -61,6 +61,31 @@ def build_site(files: list[Path]) -> None:
         target = OUTPUT / source.relative_to(ROOT)
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(source, target)
+    images = [p.relative_to(ROOT).as_posix() for p in files
+              if p.suffix.lower() in {".png", ".jpg", ".jpeg", ".webp", ".svg", ".gif"}]
+    import json
+    revision = hashlib.sha256(b"".join(p.read_bytes() for p in files if p.relative_to(ROOT).as_posix() in images)).hexdigest()[:16]
+    (OUTPUT / "image-manifest.js").write_text("globalThis.SW_IMAGE_MANIFEST=" + json.dumps(images) + ";", encoding="utf-8")
+    (OUTPUT / "image-cache-sw.js").write_text("""
+const CACHE = 'sw-images-REVISION';
+self.addEventListener('install', event => event.waitUntil(self.skipWaiting()));
+self.addEventListener('activate', event => event.waitUntil((async () => {
+  await self.clients.claim();
+  for (const key of await caches.keys()) if (key.startsWith('sw-images-') && key !== CACHE) await caches.delete(key);
+})()));
+const IMAGES = new Set(PATHS.map(path => new URL(path, self.registration.scope).href));
+self.addEventListener('fetch', event => {
+  if (event.request.method !== 'GET' || !IMAGES.has(event.request.url)) return;
+  event.respondWith((async () => {
+    const cache = await caches.open(CACHE);
+    const hit = await cache.match(event.request);
+    if (hit) return hit;
+    const response = await fetch(event.request);
+    if (response.ok) { try { await cache.put(event.request, response.clone()); } catch {} }
+    return response;
+  })());
+});
+""".replace('REVISION', revision).replace('PATHS', json.dumps(images)), encoding="utf-8")
     entry = OUTPUT / "index.html"
     if entry.is_file():
         versions = {
@@ -80,7 +105,7 @@ def build_site(files: list[Path]) -> None:
 
         # Only the published entry changes; file:// and offline source keep
         # their original paths. Content hashes invalidate stale CDN/browser JS.
-        entry.write_text(ENTRY_RESOURCE.sub(version_reference, entry.read_text(encoding="utf-8")),
+        entry.write_text(ENTRY_RESOURCE.sub(version_reference, entry.read_text(encoding="utf-8").replace('  <script defer src="js/app.js">', '  <script defer src="image-manifest.js?v=' + revision + '"></script>\n  <script defer src="js/asset-loader.js?v=' + revision + '"></script>\n  <script defer src="js/app.js">')),
                          encoding="utf-8")
 
 

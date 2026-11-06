@@ -52,9 +52,9 @@ test('save validation rejects shifted schedules, altered history, tracking field
  for(const mutate of [s=>s.purchaseBoard[0].dueDay++,s=>{s.purchaseBoard[0].publishedDay++;s.purchaseBoard[0].dueDay++;},s=>s.purchaseBoard[0].extraField='unexpected',s=>s.purchaseHistory[0].dueDay++,s=>s.purchaseHistory[0].unitPrice++,s=>s.purchaseHistory[0].publicationId='publication-grain-order-2',s=>s.purchaseBoard.push({...s.purchaseBoard[0]}),s=>s.purchaseHistory.push({...s.purchaseHistory[0]}),s=>s.purchaseHistory=[],s=>s.extraField=[],s=>s.unlockedMechanics.push('undefined-mechanic')]){const damaged=structuredClone(saved);mutate(damaged.state);assert.equal(g.importSave(damaged).ok,false);assert.deepEqual(g.state,saved.state);}
  const cooldown=structuredClone(saved);cooldown.state.purchaseBoard[0].nextPublishDay++;assert.equal(g.importSave(cooldown).ok,false);
 });
-test('v8 is the only accepted save version and rejected envelopes leave the journey untouched',()=>{
- assert.equal(VERSION,8);const g=new Game(data),saved=JSON.parse(g.exportSave());
- for(const version of [0,1,2,3,4,5,6,7,9]){const old=structuredClone(saved);old.version=version;old.state.schemaVersion=version;assert.equal(g.importSave(old).ok,false);assert.deepEqual(g.state,saved.state);}
+test('v9 is the only accepted save version and rejected envelopes leave the journey untouched',()=>{
+ assert.equal(VERSION,9);const g=new Game(data),saved=JSON.parse(g.exportSave());
+ for(const version of [0,1,2,3,4,5,6,7,8]){const old=structuredClone(saved);old.version=version;old.state.schemaVersion=version;assert.equal(g.importSave(old).ok,false);assert.deepEqual(g.state,saved.state);}
 });
 test('completed-publication history stays bounded and saves after many delivery cycles',()=>{
  const d=structuredClone(data);d.initial.inventory.grain=780;d.initial.wagon={cols:30,rows:5,maxWeight:1000};const g=new Game(d);

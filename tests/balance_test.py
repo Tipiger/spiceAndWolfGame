@@ -95,7 +95,7 @@ class PlanningTables(unittest.TestCase):
 
     def test_event_inputs_compile_from_the_same_workbook(self):
         balance = self.build()
-        self.assertEqual(balance['rules']['events']['forecastDays'], 2)
+        self.assertEqual(balance['rules']['events']['rainForecastDays'], 2)
         self.assertEqual({event['id'] for event in balance['worldEvents']}, {'rain', 'harvest', 'festival'})
         changed = self.build(lambda t: t['随机事件'][1].update({'行情倍率': .6}))
         self.assertEqual(next(event for event in changed['worldEvents'] if event['id'] == 'harvest')['priceMultiplier'], .6)
@@ -123,7 +123,7 @@ class PlanningTables(unittest.TestCase):
             lambda t: t['随机事件'][1].update({'行情倍率': 0}),
             lambda t: t['随机事件'].append(t['随机事件'][0]),
             lambda t: next(row for row in t['全局参数'] if row['参数键'] == 'rules.events.dailyChance').update({'数值': 1.1}),
-            lambda t: next(row for row in t['全局参数'] if row['参数键'] == 'rules.events.forecastDays').update({'数值': 0}),
+            lambda t: next(row for row in t['全局参数'] if row['参数键'] == 'rules.events.rainForecastDays').update({'数值': 0}),
         ]
         for mutation in mutations:
             with self.subTest(mutation=mutation), self.assertRaises(ValueError):

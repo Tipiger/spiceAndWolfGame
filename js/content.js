@@ -313,6 +313,7 @@ globalThis.SW_CONTENT = {
     "tavern": "assets/events/tavern.png",
     "traveler": "assets/events/traveler.png"
   },
+  "newsNoInformation": "酒馆老板：酒钱收下了。今日聊来聊去，倒没有什么新鲜的风声，下回有机会再坐坐。",
   "newsSpeakers": {
     "tavern": "酒馆老板",
     "traveler": "赶路的旅人",
