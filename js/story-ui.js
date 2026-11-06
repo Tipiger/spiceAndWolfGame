@@ -13,6 +13,8 @@
     let seen = 0;
     let lastImage = '';
     let finished = false;
+    const mobileLayout = matchMedia('(max-width:700px)');
+    let readingHidden = false;
 
     app.inert = true;
     drawers.inert = true;
@@ -32,7 +34,8 @@
           <img id="vn-novel-image" alt="旅途画页">
           <figcaption id="vn-novel-caption"></figcaption>
         </figure>
-        <section class="vn-dialog">
+        <section class="vn-dialog" id="vn-dialog">
+          <button class="vn-reading-toggle vn-hide-reading" id="vn-hide-reading" aria-controls="vn-dialog" aria-expanded="true">收起文字</button>
           <div class="vn-speaker" id="vn-speaker"></div>
           <div class="vn-text" tabindex="0" aria-label="本页剧情">
             <span class="vn-text-measure" aria-hidden="true"></span>
@@ -46,6 +49,7 @@
             </div>
           </footer>
         </section>
+        <button class="vn-reading-toggle vn-show-reading" id="vn-show-reading" aria-controls="vn-dialog" aria-expanded="false">展开文字</button>
         <section class="vn-log" id="vn-log" hidden></section>
       </section>`;
 
@@ -60,6 +64,19 @@
     }
 
     find('.vn-background').style.backgroundImage = `url('${background}')`;
+
+    function setReadingHidden(hidden) {
+      readingHidden = hidden && mobileLayout.matches && Boolean(lastImage);
+      find('.vn-scene').classList.toggle('is-reading-hidden', readingHidden);
+      find('.vn-dialog').inert = readingHidden;
+      find('.vn-top').inert = readingHidden;
+      find('#vn-hide-reading').setAttribute('aria-expanded', String(!readingHidden));
+      find('#vn-show-reading').setAttribute('aria-expanded', String(!readingHidden));
+    }
+
+    function restoreReading() {
+      setReadingHidden(false);
+    }
 
     function setBackground() {
       const { image = '', imageCaption, imageLayout } = imageFor();
@@ -76,6 +93,7 @@
         }
       }
       lastImage = image;
+      restoreReading();
     }
 
     function show() {
@@ -111,6 +129,7 @@
     function cleanup() {
       clearInterval(timer);
       document.removeEventListener('keydown', key);
+      mobileLayout.removeEventListener('change', restoreReading);
     }
 
     function finish() {
@@ -122,6 +141,7 @@
     }
 
     function next() {
+      if (readingHidden) return;
       if (!find('#vn-log').hidden) return;
       if (typing) {
         clearInterval(timer);
@@ -135,6 +155,7 @@
     }
 
     function back() {
+      if (readingHidden) return;
       if (index === 0) return;
       index--;
       show();
@@ -160,6 +181,15 @@
     }
 
     find('#vn-next').onclick = next;
+    find('#vn-hide-reading').onclick = () => {
+      setReadingHidden(true);
+      find('#vn-show-reading').focus();
+    };
+    find('#vn-show-reading').onclick = () => {
+      restoreReading();
+      find('#vn-hide-reading').focus();
+    };
+    mobileLayout.addEventListener('change', restoreReading);
     find('.vn-text').onclick = next;
     find('#vn-back').onclick = back;
     find('#vn-skip').onclick = finish;

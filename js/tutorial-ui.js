@@ -17,10 +17,11 @@
     };
     function render(){
       const c=getContext(),id=c.story?.id;
-      const tradeGuide=document.querySelector('.trade-guidance'),host=tradeGuide||document.body;
+      if(id!==current){current=id;index=progress.get(c.game)?.[id]||0;paused=false;}
+      const tradeGuide=paused?null:document.querySelector('.trade-guidance'),host=tradeGuide||document.body;
       if(panel.parentElement!==host)host.append(panel);
       panel.classList.toggle('is-inline',!!tradeGuide);
-      if(id!==current){current=id;index=progress.get(c.game)?.[id]||0;paused=false;}
+      panel.classList.toggle('is-collapsed',paused);
       if(id==='fur-deal'&&index===4&&!document.querySelector('#trade-confirm'))index=3;
       if(id==='fur-deal'&&c.game.state.city==='pazzio'&&index<2)index=2;
       if(id==='fur-deal'&&c.game.canAdvanceStory().ok&&index<5)index=5;
@@ -45,7 +46,7 @@
       target=null;
       if(!c.active||c.busy||!steps[id]||index>=steps[id].length){panel.hidden=true;return;}
       panel.hidden=false;
-      if(paused){panel.innerHTML='<button type="button" data-wizard="resume">继续操作引导</button>';return;}
+      if(paused){panel.style.top='';panel.style.bottom='';panel.innerHTML='<button type="button" data-wizard="resume" aria-label="展开操作引导">引导</button>';return;}
       const [title,text,selector]=steps[id][index];
       target=[...document.querySelectorAll(selector)].find(n=>n.getClientRects().length&&!n.disabled&&!n.closest('[inert]'));
       target?.classList.add('tutorial-target');
