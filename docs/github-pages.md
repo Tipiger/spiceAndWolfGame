@@ -8,7 +8,7 @@
 - 在线游玩：[狼与香辛料 · 行商旅记](https://tipiger.github.io/spiceAndWolfGame/)。
 - 构建与发布：[Verify and deploy GitHub Pages](https://github.com/Tipiger/spiceAndWolfGame/actions/workflows/pages.yml)。
 
-2026-11-05 已完成手动发布与线上浏览器验收。Pages 来源为 GitHub Actions，HTTPS 已强制启用；配置包含 `main` 推送触发，完整验证成功才会更新站点。本轮尚未观察到推送自动创建运行记录；如果推送后没有任务，在工作流页面选择 **Run workflow**，分支选 `main`，即可完成已验证可用的发布流程。
+2026-11-06 已发布最新剧情、操作引导、高清中文插图和分目录WebP素材。游戏提交`cf8d48b`，[发布任务](https://github.com/Tipiger/spiceAndWolfGame/actions/runs/42188237658)成功；94项检查、61个线上文件摘要核对及桌面/手机首页验收通过。Pages来源为GitHub Actions，HTTPS已启用。`main`推送仍未自动创建任务，本次通过既有工作流手动发布；后续如仍无任务，在工作流选择 **Run workflow**，分支选`main`。
 
 ## 在其他电脑继续维护
 
@@ -61,7 +61,7 @@ git push
 
 选入 `assets/source/novel/` 的插图母版、修复输入和 `assets/runtime/novel/` 的 WebP 展示图，和原作库里的完整参考材料分别管理；游戏不会读取被忽略的原作库。制作源与展示图对应关系和摘要见 `scripts/image-exports.json`。考据文档记录原作定位和改编依据，不包含整套原文。
 
-`npm run build:pages` 完整检查后生成 `_site/`，只包含游戏入口、样式、脚本、实际使用的素材与来源等 Markdown 文档，本地WebP版本的28张运行图片共11.35 MiB，站点约11.88 MiB，尚未发布线上。`python3 -B scripts/build_pages.py --list` 可以只查看清单。发布产物入口的本地JS/CSS使用内容SHA256前12位的`?v=`参数，避免旧缓存脚本与更新后的素材混用；源码`index.html`保持原路径，离线方式不变。Actions直接部署静态文件，不经过Jekyll，仓库子目录仍使用相对路径。
+`npm run build:pages` 完整检查后生成 `_site/`，只包含游戏入口、样式、脚本、实际使用的素材与来源等 Markdown 文档，本地WebP版本的28张运行图片共11.35 MiB，站点约11.89 MiB，已发布线上。`python3 -B scripts/build_pages.py --list` 可以只查看清单。发布产物入口的本地JS/CSS使用内容SHA256前12位的`?v=`参数，避免旧缓存脚本与更新后的素材混用；源码`index.html`保持原路径，离线方式不变。Actions直接部署静态文件，不经过Jekyll，仓库子目录仍使用相对路径。
 
 `.gitignore` 排除 `_site/`、离线发行包、依赖缓存、环境密钥文件、常见存档文件，以及整套 `assets/狼与香辛料原作/`。原作资料库保留在本地，不上传、不进入站点。选定的原作插图及来源标记作为游戏实际资产保留。源码、测试、策划表、文档和工作流由 Git 管理，站点构建不包含开发脚本、测试或策划表。
 

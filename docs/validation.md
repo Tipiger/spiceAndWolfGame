@@ -1,5 +1,11 @@
 # 当前验证结果
 
+## 最新线上发布（2026-11-06）
+
+- 游戏提交`cf8d48b`已通过[GitHub Pages发布任务](https://github.com/Tipiger/spiceAndWolfGame/actions/runs/42188237658)，包含52页剧情、操作引导、12张高清中文小说插图和制作源/发布图分目录。`npm run build:pages`及线上构建通过完整94项检查，存档版本v10、数值摘要`e05b73881624798e`。
+- 实际下载核对61个线上文件，SHA-256全部与本地发布包一致；28张运行图片约11.35 MiB，站点约11.89 MiB。制作源路径及已替换的旧图片路径返回404，原作库和候选预览均不发布。
+- 浏览器打开带`?release=cf8d48b`的正式入口，28张图片预加载完成后正常进入标题；刷新后仍正常进入。1280×720与390×844标题页显示正常，主视觉指向`assets/runtime/official/hero.webp`，无脚本错误或警告。未开启新档或覆盖线上自动存档；本轮仅检查发布入口与资源，不重复整章经营流程。当前[桌面线上截图](screenshots/release-online-desktop.jpg)、[手机线上截图](screenshots/release-online-mobile.jpg)，临时视口已恢复。
+
 ## 图片目录与最新内容整合（2026-11-06，本地未发布）
 
 - 68份图片按制作源和发布图分目录，逐项核对移动前后SHA-256相同，图片本身未重新编码。`assets/source/novel/hd/`保存12张高清增强PNG，`source/novel/input/`保留12张400像素修复输入；官网原图和其他母版按用途保存，原作库保持原位。完整目录及发布范围见`assets/README.md`。
