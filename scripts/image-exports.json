@@ -80,6 +80,12 @@
       "outputSha256": "2a305fd1fcc85437c76e4d8db8c16c5e64954564c9ca1780be8aaa8ba5ffcf6c"
     },
     {
+      "source": "assets/source/novel/hd/v1-first-meeting-enhanced.png",
+      "output": "assets/runtime/novel/v1-first-meeting-enhanced.webp",
+      "sourceSha256": "ee8f82fd211da833b57fd4415ea75fc51b07649cfa4e522fa77414b8dd700012",
+      "outputSha256": "7513b00d4d944d018ba25c24112768cf924dcc859fddb88eb9163e3ea6c9fa42"
+    },
+    {
       "source": "assets/source/novel/hd/v1-holo-travel-clothes-enhanced.png",
       "output": "assets/runtime/novel/v1-holo-travel-clothes-enhanced.webp",
       "sourceSha256": "05954c2d717ffce6d72372beac1da574bb25052cad0133aa8f509565e4487076",

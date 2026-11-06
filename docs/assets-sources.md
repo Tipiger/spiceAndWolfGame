@@ -6,7 +6,7 @@
 
 制作源统一保存在 `assets/source/`：小说高清PNG母版在 `novel/hd/`，原尺寸去水印修复输入在 `novel/input/`，其余按 `official/`、`map/`、`events/`、`story/`、`wagon/` 分类。游戏只引用 `assets/runtime/` 的最终展示图；网站不发布制作源，可编辑离线包保留全部制作源与展示图。详细清单见 [图片目录说明](../assets/README.md)。整套原作库与带书源标记的扫描保留原位。
 
-使用 `cwebp -q 92 -m 6 -sharp_yuv -alpha_q 100 -exact -metadata none`，保持当前母版尺寸、无损透明通道，颜色采用高质量有损压缩。当前27张编码母版共65.99 MiB，发布WebP约11.35 MiB，减少82.8%；另有1张SVG不转码。当前小说插图为1038–1046像素宽的高清中文增强版；增强前6.99 MiB的总量不再代表当前发布内容。
+使用 `cwebp -q 92 -m 6 -sharp_yuv -alpha_q 100 -exact -metadata none`，保持当前母版尺寸、无损透明通道，颜色采用高质量有损压缩。当前28张编码母版共71.02 MiB，发布WebP约11.68 MiB，减少83.6%；另有1张SVG不转码。当前小说插图为1038–2926像素宽的高清中文增强版；增强前6.99 MiB的总量不再代表当前发布内容。
 
 编码器版本、完整对应关系和SHA-256见 `scripts/image-exports.json`；`npm run images`从母版重新导出，`npm run images:check`检查同步状态。目录整理前后68个文件摘要逐一一致，未重新编码或覆盖任何原文件。下文路径已更新，代码块内的实际成功提示词保留当时请求原文；当时的输入文件名对应当前制作源文件名。临时试转和对照图不进入仓库或发布包。
 
@@ -37,7 +37,7 @@ Design A: Warm ivory and light oatmeal linen ground, airy small tossed repeat. T
 
 ## 小说插图
 
-`assets/source/novel/input/` 保留12张原尺寸去水印修复输入，右下书源区域采用AI补绘，其余像素保留。`assets/source/novel/hd/` 保存后续高清增强及中文翻译PNG母版。游戏图册和剧情插页引用 `assets/runtime/novel/` 的WebP；原始JPEG及书源标记继续保存在原作库中。清单、场景对应、补画限制及内置imagegen实际提示词见 [novel-art.md](novel-art.md)；文字考据见 [novel-content.md](novel-content.md)。
+`assets/source/novel/input/` 保留12张原尺寸去水印修复输入及1幅用户最终选定的初遇合图。前12张仅右下书源区域采用AI补绘，初遇合图另含跨页拼接、中文替字与毛皮遮挡补绘。`assets/source/novel/hd/` 保存13幅高清增强及中文翻译PNG母版；初遇母版经细节增强与2倍重采样，尺寸2926×2150。游戏图册和剧情插页引用 `assets/runtime/novel/` 的WebP；原始JPEG及书源标记继续保存在原作库中。清单、场景对应、补画限制及内置imagegen实际提示词见 [novel-art.md](novel-art.md)；文字考据见 [novel-content.md](novel-content.md)。
 
 ## AI 地图与道具
 

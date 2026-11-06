@@ -1,6 +1,6 @@
 # 本地原作插图选用记录
 
-已查看用户提供的第一卷全部18张图片，并结合第一至六幕、尾声核对场景。当前选用第一卷11张、第二卷1张，运行使用 `assets/runtime/novel/*-enhanced.webp` 高清中文展示版，对应无损母版在 `assets/source/novel/hd/`，文件名为 `*-enhanced.png`。原尺寸去水印PNG保留为本轮修复输入。下方选图表中的无后缀名称对应修复前输入，原始尺寸描述扫描来源。第一卷11张全部进入主线过场，12张展示图全部收录在手账图册。原始JPEG与书源标记完整保存在原作库中，没有复制整套原作目录。
+已查看用户提供的第一卷全部18张图片，并结合第一至六幕、尾声核对场景。当前选用第一卷12幅、第二卷1幅，其中初遇合图由第一卷03、04两张扫描组成。运行使用 `assets/runtime/novel/*-enhanced.webp` 高清中文展示版，对应无损母版在 `assets/source/novel/hd/`，文件名为 `*-enhanced.png`。原尺寸去水印PNG及用户选定合图保留为修复输入。下方选图表中的无后缀名称对应修复前输入，原始尺寸描述扫描来源。第一卷12幅全部进入主线过场，13幅展示图全部收录在手账图册。原始JPEG与书源标记完整保存在原作库中，没有复制整套原作目录。
 
 原作目录的 `插图.txt` 只有标题，没有图片与正文的对应标注。因此下文区分画面与正文直接吻合的场景，以及依据插图顺序、人物和所在卷推定的场景。文本行号均以本地文件为准。
 
@@ -10,6 +10,7 @@
 
 | 资源 | 原始用户文件路径 | 尺寸 | 画面与对应依据 | 建议展示场景 |
 | --- | --- | --- | --- | --- |
+| `assets/source/novel/input/v1-first-meeting.png` | `assets/狼与香辛料原作/第01卷/插图_03.jpg`＋`插图_04.jpg` | 每页400×584；用户选定合图1463×1075 | 第一幕月夜货台初遇；03为左页赫萝，04为右页尾巴与罗伦斯。对白对应第一幕345行，身上毛皮为用户选定的AI遮挡补绘。 | 序幕第1–4页「月夜里的初遇」，第5页次日切回旅装图；图册首幅。 |
 | `assets/source/novel/input/v1-holo-travel-clothes.png` | `assets/狼与香辛料原作/第01卷/插图_11.jpg` | 400 × 576 | 黑白整身赫萝，耳、尾可见，穿罗伦斯的大号旅行衣装。与第 1 卷第一幕 935–977 行次日早晨借穿衣服、询问衣服是否合身、为尾巴留空间的情节吻合。 | 初遇后的「同行」一幕、伙伴介绍。不要当成赫萝最初从麦堆现身的瞬间。 |
 | `assets/source/novel/input/v1-apples-on-wagon.png` | `assets/狼与香辛料原作/第01卷/插图_12.jpg` | 400 × 576 | 黑白双人马车图；戴头巾的赫萝抱着苹果进食，罗伦斯坐在旁边。对应第 1 卷第三幕 135–231 行帕兹欧苹果摊购买大量苹果、赫萝在马车上连吃苹果。场景明确。 | 帕兹欧初到、苹果图鉴、同行者短过场。它是吃苹果的剧情画面，不是苹果产地证明或市场交易凭证。 |
 | `assets/source/novel/input/v1-money-changer.png` | `assets/狼与香辛料原作/第01卷/插图_13.jpg` | 400 × 576 | 黑白坐姿青年、面前的钱币和钱柜。第 1 卷第三幕 1015–1160 行写到怀兹坐在兑换摊、罗伦斯向其打听银币。依据画面、人物与插图顺序，可合理对应怀兹；原图无姓名图注。 | 银币风波中的钱币情报/人物介绍。单一特雷尼银币规则下仍可讲银币成色与商行情报，不据此恢复兑换玩法。不要误标为米隆毛皮收购商。 |
@@ -32,10 +33,10 @@
 
 ## 展示与取舍
 
-- 扫描来源只有 400 像素宽；当前展示版已增强至1038–1046像素宽。在视觉小说中使用竖幅插画框，宽屏左图右文，窄屏上图下文，使用 `object-fit: contain` 保留全图。大幅横向铺满屏幕会显著模糊，并截掉人物与图下文字。
+- 原单页扫描只有400像素宽，12幅竖图增强至1038–1046像素宽；初遇横幅高清母版为2926×2150。宽屏左图右文，初遇横幅使用更宽的插画区域；窄屏上图下文，统一使用 `object-fit: contain` 保留全图，不裁掉人物与图中文字。
 - 已有 `assets/source/official/hero.jpg` 比这批扫描图分辨率高，且是小说插画风格的双人宣传图；标题画面可以保留，新图用于确切的原作场景补充。
-- 三张彩页的日文已在增强版中替换为中文；原始日文继续保存在扫描和修复输入中。游戏剧情对白仍使用独立文本框。
-- 第一卷01、02为封面/扉页，09为目录；03、04为初遇裸身/尾巴跨页，07为彩页跨页的另一侧，10为初遇持刀确认身份。以上未加入当前精简过场，避免封面排字、重复画面与既有开篇节奏不合。第 2 卷诺拉与羊犬的图属于更晚剧情，没有拿它们冒充胡椒北行开端。
+- 四幅彩页（含初遇合图）的日文已在展示版中替换为中文；原始日文继续保存在扫描中，先前3张的日文修复输入也保留。游戏剧情对白仍使用独立文本框。
+- 第一卷01、02为封面/扉页，09为目录，07为彩页跨页的另一侧，10为初遇持刀确认身份，均未加入当前精简过场。03、04已按用户选定的毛皮搭覆版合图接入序幕。第2卷诺拉与羊犬的图属于更晚剧情，没有拿它们冒充胡椒北行开端。
 - 每张原文件右下均含原有书源水印，完整保留。所有资产来自用户提供的本地书稿，仅供当前私人游戏使用；本记录不构成对来源或权属的新主张。
 
 ## 可支持文本补充的正文线索
@@ -321,4 +322,59 @@ Preserve grayscale enormous wolf standing in dark timber tunnel, small Lawrence 
 
 ```text
 Preserve grayscale close-up of two companions, nervous man's sweat and slight stubble, delighted smiling woman's face, hand grasping sleeve, hood and garment fasteners exactly. No text.
+```
+
+## 月夜初遇跨页合图（2026-11-06）
+
+用户最终选择整张毛皮松搭的版本，输入为`assets/source/novel/input/v1-first-meeting.png`，与用户指定的`exec-2e245fe3-f88a-4593-beac-fee55e1d851f.png`字节一致。最初以03页在左、04页在右拼接扫描，局部处理书缝、书源标记及中文替字，并增加完整毛皮遮挡；后续在这一安全遮挡工作图上修整披搭形态。原始扫描和书源标记没有修改。
+
+选定输入1463×1075；内置图片工具保守增强的实际输出仍为1463×1075，再使用macOS系统高质量重采样放大2倍到2926×2150，保存为`assets/source/novel/hd/v1-first-meeting-enhanced.png`。没有将提示词所请求的3072尺寸当成实际输出。全图细节增强及毛皮含AI推补，不是官方高清扫描或逐像素复原。运行图为同名q92 WebP（344766字节），保留母版全尺寸。第一页声明`imageLayout: "wide"`，沿用至第4页，第5页切回既有旅装图；图册共13幅。
+
+### 初遇图中文字
+
+- 左侧可辨日文「良い月じゃ。酒などないかや」，依据本地第一幕345行译为「……呼，真是好月色，有没有酒啊？」；小字「豊作の神・賢狼ホロ」译为「丰收之神·贤狼赫萝」。
+- 右侧「月明かりに照らされた娘の姿。娘の頭についている耳。獣の、それ。」译为「月光照亮了少女的身影。她头上长着耳朵。那是野兽的耳朵。」。
+
+### 实际有效编辑提示词
+
+以下均为内置`image_gen.imagegen`的实际成功请求，`transparent_background=false`。前三段依次用于遮挡工作合图、完整包覆版及露出普通前臂的版本；最后一段直接使用用户选定输入。弃用的布料和其他材质候选不进入制作源或运行素材。
+
+**毛皮遮挡局部修整**
+
+```text
+Use case: precise-object-edit.
+Input is a rough, already fully covered illustration composite EDIT TARGET, not a style reference.
+Restore ONLY the obvious rough brown blanket overlay on the left seated character and the narrow vertical page seam at the center. Replace the angular patch-shaped blanket with a naturally draped, thick, completely opaque brown fur wrap, covering from BOTH shoulders down through torso, hips and lap. Closed fully in front. No nudity, no revealing garment, no sexual emphasis. Keep the original left hand at the bottom visible and make the blanket fold end naturally near its wrist. Match the surrounding painted brown furs with subdued coarse fur texture, soft irregular edges and believable broad folds. Remove the artificial dark diagonal geometric bands and the paper seam at center.
+Preserve EVERY other region as faithfully as possible: do not redraw the face, expression, eyes, hair, ears, tail, right-hand figure, night sky, wagon timber, white Chinese captions or full framing. Keep the complete 1592x1168 wide composition with the same left-right placement and subdued original low-resolution scan painting aesthetic. No enhancement or style reinterpretation. Do not add objects, moon, stars, lettering, logo or watermark. Output one opaque image.
+```
+
+**前臂局部调整**
+
+```text
+Use case: precise-object-edit.
+Input is the fully clothed EDIT TARGET.
+Make only a small sleeve adjustment to the existing brown fur cloak on the seated figure at left: shorten the forward sleeve to just below the elbow, revealing ONLY the ordinary forearm and connecting it naturally to the existing hand resting on the fur bedding at bottom left. Preserve the exact existing hand position and seated pose. The forearm reaches down in front of the cloak; it must not open the front of the garment.
+Keep BOTH shoulders, upper arms, neck, chest, torso, lap and lower body covered by the same fully closed, opaque, thick brown fur cloak with high neckline. Keep the collar and body of the cloak unchanged. This is a modest everyday clothing adjustment.
+Preserve all other pixels and features as faithfully as possible: face, facial expression, hair, ears, tail, wagon, sky, merchant on right, Chinese captions, original muted palette and painterly scan texture. Do not redraw the face, enhance the style, add people, objects or lettering. Output the same single complete wide illustration.
+```
+
+**用户选定的整张毛皮搭覆版**
+
+```text
+Use case: precise-object-edit.
+Input is the EDIT TARGET. Change ONLY the structure of the brown fur covering on the seated character at left. It currently looks like a tailored fur coat with a sleeve and cuff. Replace that tailored garment with ONE LARGE LOOSE UNSEWN FUR PELT draped like a blanket over the shoulders and around the front, continuing onto the lap and surrounding fur bedding.
+The pelt has no sleeves, cuffs, collar, armholes, seams, closures, buttons or fitted waist. Show a single irregular free-hanging edge and a little matte leather underside where this edge folds back. Broad heavy asymmetric folds fall under gravity, rather than tubular folds wrapping the arm. The forward forearm reaches down OUT FROM UNDER a loose side edge of the blanket; preserve the existing hand resting on the bedding and its exact position. There must be visible air/space between the free blanket edge and part of the forearm, showing this is a loose blanket and not a sleeve.
+Maintain complete opaque coverage of the chest, torso, hips and lap. Keep most of the pelt resting securely on the shoulders. Only the already visible ordinary forearm and hand need be exposed; no additional skin exposure is requested.
+Preserve exact face, expression, eyes, hair, ears, pose, hand, tail, right merchant, wagon, sky, all white Chinese captions and complete framing. Match the original muted brown fur, navy sky and low-resolution painterly scan texture. No whole-scene redraw, facial beautification, added objects, moon, lettering, watermark or style change. Output one opaque wide illustration.
+```
+
+**选定版本的高清增强**
+
+```text
+Use case: precise-object-edit.
+Asset type: final high-resolution master of the USER-APPROVED illustration for an offline story game.
+The single supplied image is the EXACT EDIT TARGET. This specific version is approved. Perform ONLY conservative high-resolution enhancement, ideally about 3072x2256 pixels (roughly 2x the input width), retaining the complete original aspect ratio.
+Preserve the exact illustration: full wide composition, framing, character face and proportions, eyes, expression, gaze, hair, ears, hand and fingers, seated pose, single loose brown fur pelt draped over the shoulders and lap, currently visible ordinary forearm, tail, cropped merchant at right, wagon timber, night sky, stars and every Chinese caption in its existing position. Keep complete opaque body coverage and the same drape arrangement.
+Improve clean contour readability and remove mild resize/compression artifacts while retaining the existing soft painted light-novel style and subdued moonlit palette. Keep fur softly suggested, do not add individual realistic hairs, pores, elaborate microtexture, new lighting, photoreal rendering or polished 3D volume. Do not sharpen into hard vector edges or smooth away pencil/paint character. Do not change facial features or redesign the covering. No reinterpretation, extra objects, crops, zoom, padding, new moon, new lettering, logos or watermark.
+All existing white Chinese characters must remain exactly unchanged and clearly legible. Do not retranslate or add captions. Output one opaque full-frame high-resolution image.
 ```

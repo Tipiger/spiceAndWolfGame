@@ -2369,6 +2369,14 @@ body:has(.overlay,.vn-scene) .toast-root {
   min-height: 0;
 }
 
+@media(min-width:651px) and (min-height:631px) {
+  .with-wide-plate {
+    grid-template-columns: minmax(0,600px) minmax(0,500px);
+    column-gap: clamp(24px,4vw,56px);
+    padding-inline: 4vw;
+  }
+}
+
 @media(max-width:650px) {
   .vn-scene:not(.with-novel-plate) .vn-top {
     padding: 10px 16px;

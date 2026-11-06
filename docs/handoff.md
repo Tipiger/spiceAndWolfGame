@@ -1,5 +1,7 @@
 # 当前剧情与教学调整
 
+初遇跨页已按用户最终选定的整张毛皮搭覆版接入序幕前四页与旅途画页；次日切回旅装图。选定输入在`assets/source/novel/input/v1-first-meeting.png`，高清母版在`assets/source/novel/hd/v1-first-meeting-enhanced.png`（2926×2150），游戏加载同名runtime WebP。宽屏横幅区域放大，手机保留全图；图册现13幅。原始扫描保留，弃用的布料预览已清理；来源、译文和有效提示词见`docs/novel-art.md`。桌面及390/320宽浏览器通过，数值与存档不变、无需新档；本轮未发布线上，完整验证见validation。
+
 2026-11-06 最新游戏已发布至 https://tipiger.github.io/spiceAndWolfGame/ ，游戏提交`cf8d48b`，[发布任务](https://github.com/Tipiger/spiceAndWolfGame/actions/runs/42188237658)成功。完整94项检查通过，61个线上文件与发布包逐项SHA-256一致；28张运行图片预加载、刷新及桌面/手机标题页正常。制作源不进入网站，原作库保留；线上截图和详细验证见validation。
 
 12张小说插图已全部换为`assets/runtime/novel/*-enhanced.webp`，无损母版在`assets/source/novel/hd/`，原尺寸输入在`assets/source/novel/input/`，宽度由400增强至1038–1046像素；杰廉、避雨闲谈、营救重逢三张彩页的日文已在图内替换为中文。重逢末句原扫描有遮挡，只译可辨部分并保留省略号。原作库及原尺寸去水印PNG完整保留，低清WebP已移除。全图AI增强细节含推补，完整来源、译文和实际提示词见`docs/novel-art.md`。剧情、图册与伙伴入口均接入新版；桌面、390/320宽浏览器及图册12张加载正常，94项检查通过，验收截图见validation。数值与存档不变，无需新档，已发布线上。

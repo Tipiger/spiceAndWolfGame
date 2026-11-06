@@ -269,7 +269,10 @@ globalThis.SW_CONTENT = {
     {
       "speaker": "旁白",
       "text": "收割祭的喧闹渐渐落在身后，罗伦斯驾着马车离开帕斯罗。车上装着待售的毛皮，还有从山村带来的麦束。他打算到帕兹欧卖掉毛皮，再用货款准备下一趟生意。\n在河边停下来过夜时，他掀开货台的麻布，却发现貂皮里蜷着一个陌生女孩。更奇怪的是，她头上长着狼耳，身后还露出一条蓬松的尾巴。",
-      "scene": "wheat"
+      "scene": "wheat",
+      "image": "assets/runtime/novel/v1-first-meeting-enhanced.webp",
+      "imageCaption": "月夜里的初遇",
+      "imageLayout": "wide"
     },
     {
       "speaker": "旁白",
@@ -1187,6 +1190,12 @@ globalThis.SW_CONTENT = {
     }
   ],
   "novelArt": [
+    {
+      "key": "meeting",
+      "file": "v1-first-meeting-enhanced.webp",
+      "title": "月夜里的初遇",
+      "note": "月光下的货台上，罗伦斯初次遇见赫萝。"
+    },
     {
       "key": "clothes",
       "file": "v1-holo-travel-clothes-enhanced.webp",

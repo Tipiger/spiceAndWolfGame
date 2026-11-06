@@ -62,10 +62,11 @@
     find('.vn-background').style.backgroundImage = `url('${background}')`;
 
     function setBackground() {
-      const { image = '', imageCaption } = imageFor();
+      const { image = '', imageCaption, imageLayout } = imageFor();
       const caption = imageCaption || '同行的片刻';
       const book = Boolean(image);
       find('.vn-scene').classList.toggle('with-novel-plate', book);
+      find('.vn-scene').classList.toggle('with-wide-plate', book && imageLayout === 'wide');
       find('.vn-novel-plate').hidden = !book;
       if (book) {
         find('#vn-novel-caption').textContent = caption;
